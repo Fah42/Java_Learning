@@ -1,0 +1,186 @@
+---------------------
+    EXERCICE 1 :    |
+---------------------
+1 : CREATE DATABASE banque
+---------------------
+    EXERCICE 2 :    |
+---------------------
+CREATE TABLE client(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> prenom VARCHAR(50),
+    -> age INT,
+    -> ville VARCHAR(50)
+    -> );
+
+CREATE TABLE compte(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nb VARCHAR(50),
+    -> solde FLOAT,
+    -> id_client int
+    -> );
+
+CREATE TABLE carte(
+    -> id int AUTO_INCREMENT PRIMARY KEY,
+    -> numero VARCHAR(20),
+    -> typec VARCHAR(10),
+    -> an_exp INT,
+    -> id_compte INT);
+
+---------------------
+    EXERCICE 3 :    |
+---------------------
+ALTER TABLE carte
+    -> ADD CONSTRAINT fk_idcarte
+    -> FOREIGN KEY (id_compte)
+    -> REFERENCES compte(id_client);
+
+ALTER TABLE compte
+    -> ADD CONSTRAINT fk_idclient
+    -> FOREIGN KEY(id_client)
+    -> REFERENCES client(id);
+
+---------------------
+    EXERCICE 4 :    |
+---------------------
+    INSERT INTO client(prenom, age, ville)
+    -> VALUES('Junes', 32, 'Paris');
+    
+    INSERT INTO client(prenom, age, ville)
+    -> VALUES('Farid', 32, 'Pantin');
+
+    INSERT INTO client(prenom, age, ville)
+    -> VALUES('Nouha', 22, 'Plessis');
+    
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("111", 300.30, 1);
+    
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("11133", 1300.30, 1);
+    
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("11", 3, 2);
+    
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("141", 432, 2);
+
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("114123", 1123123, 3);
+    
+    INSERT INTO compte(nb, solde, id_client)
+    -> VALUES("14411", 4312, 3);
+
+    MariaDB [banque]> INSERT INTO carte(numero, typec, an_exp, id_client)
+    -> VALUES("123123", "VISA", 2024, 1);
+    
+    INSERT INTO carte(numero, typec, an_exp, id_compte)
+    -> VALUES("123123", "VISA", 2024, 1);
+
+    INSERT INTO carte(numero, typec, an_exp, id_compte)
+    -> VALUES("321321", "VISA", 2024, 2);
+
+    INSERT INTO carte(numero, typec, an_exp, id_compte)
+    -> VALUES("543543", "VISA", 2024, 3);
+
+---------------------
+    EXERCICE 5 :    |
+---------------------
+    SELECT * FROM client;
+---------------------
+    EXERCICE 6 :    |
+---------------------
+    SELECT * FROM carte;
+---------------------
+    EXERCICE 7 :    |
+---------------------
+    SELECT * FROM client WHERE ville="Paris";
+---------------------
+    EXERCICE 8 :    |
+---------------------
+    SELECT * FROM client WHERE ville="Paris" AND age>18 AND age<33;
+---------------------
+    EXERCICE 9 :    |
+---------------------
+    SELECT * FROM compte WHERE solde<300
+---------------------
+    EXERCICE 10 :   |
+---------------------
+    SELECT * FROM client WHERE ville="Marseille" AND id NOT IN (SELECT id_client FROM compte)
+---------------------
+    EXERCICE 11 :   |
+---------------------
+    SELECT nb, solde FROM compte WHERE id_client IN (SELECT id FROM client WHERE ville="Paris")
+---------------------
+    EXERCICE 12 :   |
+---------------------
+    SELECT * FROM compte WHERE id_client NOT IN (SELECT id_compte FROM carte)
+---------------------
+    EXERCICE 13 :   |
+---------------------
+    SELECT * FROM carte WHERE id_compte IN (SELECT id FROM compte WHERE solde< 10000 AND solde>1000);
+---------------------
+    EXERCICE 14 :   |
+---------------------
+    SELECT * FROM client WHERE ville="Paris" AND id IN (SELECT id_client FROM compte WHERE solde>1000);
+---------------------
+    EXERCICE 15 :   |
+---------------------
+    SELECT nb, solde FROM compte WHERE id IN (SELECT id_compte FROM carte WHERE an_exp=2022);
+---------------------
+    EXERCICE 16 :   |
+---------------------
+    SELECT * FROM compte WHERE id NOT IN(SELECT id_compte FROM carte WHERE typec="gold")
+---------------------
+    EXERCICE 17 :   |
+---------------------
+    SELECT prenom, age FROM client WHERE age < 18;
+---------------------
+    EXERCICE 18 :   |
+---------------------
+    DELETE FROM client WHERE id NOT IN (SELECT id_client FROM compte);
+---------------------
+    EXERCICE 19 :   |
+---------------------
+    DELETE FROM compte WHERE id NOT IN (SELECT id_compte FROM carte)
+---------------------
+    EXERCICE 20 :   |
+---------------------
+    DELETE FROM carte WHERE an_exp=2015;
+---------------------
+    EXERCICE 21 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE id IN (SELECT id_compte FROM carte ))
+---------------------
+    EXERCICE 22 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE id IN (SELECT id_compte FROM carte )) AND ville="Paris"
+---------------------
+    EXERCICE 23 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE id IN (SELECT id_compte FROM carte WHERE typec="gold")) AND age<18;
+---------------------
+    EXERCICE 24 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE id IN (SELECT id_compte FROM carte WHERE an_exp<2019)) AND age>18;
+---------------------
+    EXERCICE 25 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE id IN (SELECT id_compte FROM carte WHERE typec="gold")) AND ville="Paris";
+---------------------
+    EXERCICE 26 :   |
+---------------------
+    SELECT * FROM client WHERE id IN (SELECT id_client FROM compte WHERE solde < 1000 AND id IN (SELECT id_compte FROM carte WHERE an_exp<2020)) AND ville="Paris";
+---------------------
+    EXERCICE 27 :   |
+---------------------
+    SELECT * FROM carte WHERE id_compte IN (SELECT id FROM compte WHERE solde < 1000 AND id_client IN (SELECT id FROM client WHERE age > 18));
+---------------------
+    EXERCICE 28 :   |
+---------------------
+    SELECT * FROM compte WHERE id NOT IN (SELECT id_compte FROM carte) AND id_client IN (SELECT id FROM client WHERE ville = "Paris");
+---------------------
+    EXERCICE 29 :   |
+---------------------
+
+---------------------
+    EXERCICE 30 :   |
+---------------------

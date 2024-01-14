@@ -1,0 +1,49 @@
+String.toUpperCase() - String.toLowerCase() : return String
+String.charAt(int index) : return char
+String.equals() - String.equalsignore() :
+String.contains(String) : return boolean : Sensible a la casse; (Possibilite de combine les methodes tant que la valeur de retour est logique)
+String.endsWith(String) : return boolean
+String.replace(String, String) - String.replaceFirst(String, String) - String.replaceAll(String, String) : return String
+String.substring(int, int) - String.substring(int) : return String 
+String(ou collection).indexOf(String, int (le int ici sert a ignorer la substring avant l index)) String.lastIndexOf(String): return int
+char [] c = String.toCharArray() : return char[]
+String.repeat(int) : return String 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Les collections ARRAYLIST
+Un tableau qui ne peut contenir que des objets de taille dynamique et il est type
+
+ArrayList<Integer> col = new ArrayList<>();
+col.add(10);
+col.add(20);
+
+System.out.println("La taille de la collection : " + col.size());
+System.out.println("La valeur de la position 0: " + col.get(0));
+.add(posfacultatif ,valeur) permet dajouter une valeur a la fin sans le premier param sinon a lindex du premier param
+.size() retourne la taille 
+.get(int) la valeur a la position
+.isEmpty() Pour test si la collection est vide : boolean
+.contains(20) pour test si la collection contient 20 par exemple : return boolean
+.set(int, int) premier param lindex de ce que je veux modifier , le deuxieme la valeur de remplacement : return void
+.remove(int) remove la valeur a lindex du param : return void
+.clear() vider une collection : return void
+.addAll() permet de copier une collection a la fin dune autre collection
+.sort()
+
+Collections.sort(col) : permet de trier la collection par ordre croissant ( import java.util.Collections )
+Collections.sort(col, Collections.reserveOrder()) : permet de trier par ordre decroissant ( import java.util.Collections ) 
+Collections.reserve(col) : pour inverser lordre de la collection   
+Collections.shuffle() : fonction de melange
+Collections.min() : valeur min 
+Collections.max() : valeur max
+Collections.frenquency(col, int) nombre de fois ou on a la valeur de int dans col
+Collections.replaceAll(col, int, int) replace avec en param la collection puis la valeur quon souhaite modifier par le dernier param qui est la valeur de remplacement
+Collections.swap(col, int, int) cest un swap
+
+-------------------------------------------------|
+Copier une collection                            |
+ArrayList<Integer>col2 = new ArrayList<>(col);   |
+-------------------------------------------------|
+import.java.util.ArrayList;
