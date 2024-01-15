@@ -30,7 +30,7 @@ public class ClientDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("ERROR");
         }
     }
@@ -89,11 +89,13 @@ public class ClientDAO {
         }
     }
 
-    public ArrayList<Client> searchClientsByLastName(String searchTerm) {
+    public ArrayList<Client> searchClients(String searchTerm) {
         ArrayList<Client> clients = new ArrayList<>();
         try {
-            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM client WHERE prenom LIKE ?");
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM client WHERE prenom LIKE ? OR nom LIKE ? OR ville LIKE ?");
             ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            ps.setString(3, "%" + searchTerm + "%");
             ResultSet resultat = ps.executeQuery();
             while (resultat.next()) {
                 Client client = new Client();

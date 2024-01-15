@@ -13,29 +13,29 @@ public class Main {
     public static void main(String[] args) {
         Database.connect();
         
-        int Userchoice = 0;
+        int Userchoice = 99;
         while (Userchoice != 0) {
             Userchoice = menu();
             if (Userchoice == 1) {
-                
+                displayProduct();
             } else if (Userchoice == 2) {
-                   
+                addProduct();
             } else if (Userchoice == 3) {
-                
+                modifyProduct();
             } else if (Userchoice == 4) {
-
+                deleteProduct();
             } else if (Userchoice == 5) {
-                    
+                searchProduct();
             } else if (Userchoice == 6) {
                 displayClient();
             } else if (Userchoice == 7) {
                 addClient();
             } else if (Userchoice == 8) {
-
+                modifyClient();
             } else if (Userchoice == 9) {
-                    
+                deleteClient();
             } else if (Userchoice == 10) {
-                    
+                searchClient();
             } else if (Userchoice == 11) {
                     
             } else if (Userchoice == 12) {
@@ -80,12 +80,58 @@ public class Main {
         }
     }
 
+    public static void displayProduct() {
+        ArrayList<Produit> produits = new ArrayList<>();
+        ProduitDAO pdao = new ProduitDAO();
+
+        produits = pdao.getAll();
+
+        System.out.print("------ Affichage des Produits ------\n");
+        for (Produit produit : produits) {
+            System.out.println(produit);
+        }
+    }
+
+    public static void addProduct() {
+        Produit p = new Produit();
+        ProduitDAO pdao = new ProduitDAO();
+
+        System.out.println("------ Ajout de Produit ------");
+        // DEMANDER LA CATEGORIE POUR LAJOUTER A ID_CATEGORIE PLUS BAS
+        
+        System.out.println("Veuillez entrer le nom du produit : ");
+        String title = scanner.nextLine();
+
+        do {
+            /*FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION*/
+            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextDouble());
+        Double price = scanner.nextDouble();
+
+        do {
+            /*FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION*/
+            System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int stock = scanner.nextInt();
+
+        p.setTitre(title);
+        p.setPrix(price);
+        //ID CATEGORIE A FAIRE 
+        //p.setId_categorie();
+        p.setStock(stock);
+
+        pdao.save(p);
+    }
+
     public static void displayClient() {
         ArrayList<Client> clients = new ArrayList<>();
         ClientDAO cdao = new ClientDAO();
 
         clients = cdao.getAll();
 
+        System.out.print("------ Affichage des Clients ------\n");
         for (Client client : clients) {
             System.out.println(client);
         }
@@ -94,6 +140,11 @@ public class Main {
     public static void addClient() {
         Client c = new Client();
         ClientDAO cdao = new ClientDAO();
+        int age = -1;
+
+        System.out.println("------ Ajout de Client ------");
+        /*flash*/
+        scanner.nextLine();
 
         System.out.println("Veuillez entrer le nom : ");
         String lastname = scanner.nextLine();
@@ -101,8 +152,12 @@ public class Main {
         String firstname = scanner.nextLine();
         System.out.println("Veuillez entrer la ville : ");
         String city = scanner.nextLine();
-        System.out.println("Veuillez entrer l'age : ");
-        int age = scanner.nextInt();
+        do {
+            /*FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION*/
+            System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        age = scanner.nextInt();
 
         c.setPrenom(firstname);
         c.setNom(lastname);
@@ -114,7 +169,7 @@ public class Main {
 
     public static void modifyClient() {
         ClientDAO cdao = new ClientDAO();
-
+        System.out.println("------ Modification de Client ------");
         displayClient();
 
         System.out.println("Veuillez entrer l'id du client a modifier : ");
@@ -122,6 +177,9 @@ public class Main {
         Client c = cdao.getById(Userchoice);
 
         if (c != null) {
+            /* flash */
+            scanner.nextLine();
+
             System.out.println("Veuillez entrer le nom : ");
             String lastname = scanner.nextLine();
             System.out.println("Veuillez entrer le prenom : ");
@@ -129,6 +187,7 @@ public class Main {
             System.out.println("Veuillez entrer la ville : ");
             String city = scanner.nextLine();
             System.out.println("Veuillez entrer l'age : ");
+            
             int age = scanner.nextInt();
 
             c.setPrenom(firstname);
@@ -144,7 +203,7 @@ public class Main {
 
     public static void deleteClient() {
         ClientDAO cdao = new ClientDAO();
-
+        System.out.println("------ Suppresion de Client ------");
         displayClient();
 
         System.out.println("Veuillez entrer l'id du client a supprimer : ");
@@ -156,8 +215,29 @@ public class Main {
             System.out.println("Erreur ID invalide");
         }
     }
+
+    public static void searchClient() {
+        ClientDAO cdao =  new ClientDAO();
+        System.out.println("------ Recherche de Client ------");
+        /*flash*/
+        scanner.nextLine();
+
+        System.out.println("Veuillez entrer le terme de la recherche ");
+        String search = scanner.nextLine();
+
+        ArrayList<Client> searchResults = cdao.searchClients(search);
+        if (searchResults != null) {
+            System.out.println("Resultat de la recherche : ");
+            for (Client client : searchResults) {
+                System.out.println(client);
+            }
+        } else {
+            System.out.println("Aucun resultat trouve pour : " + search);
+        }
+    }
+
     public static int menu() {
-        System.out.println("---- MENU ----");
+        System.out.println("\n------ Menu de Gestion ------");
         System.out.println("1- Liste des Produits");
         System.out.println("2- Ajouter un Produit");
         System.out.println("3- Modifier un Produit");
