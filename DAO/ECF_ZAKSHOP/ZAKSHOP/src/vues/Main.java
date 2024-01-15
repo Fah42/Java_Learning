@@ -37,15 +37,15 @@ public class Main {
             } else if (Userchoice == 10) {
                 searchClient();
             } else if (Userchoice == 11) {
-                    
+                displayCategorie();
             } else if (Userchoice == 12) {
-                    
+                addCategorie();
             } else if (Userchoice == 13) {
-                    
+                modifyCategorie();
             } else if (Userchoice == 14) {
-                    
+                deleteCategorie(); 
             } else if (Userchoice == 15) {
-                    
+
             } else if (Userchoice == 16) {
                     
             } else if (Userchoice == 17) {
@@ -92,25 +92,46 @@ public class Main {
         }
     }
 
+    /*
+     * FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION
+    */
+
     public static void addProduct() {
         Produit p = new Produit();
+
         ProduitDAO pdao = new ProduitDAO();
+        CategorieDAO cdao = new CategorieDAO();
 
         System.out.println("------ Ajout de Produit ------");
-        // DEMANDER LA CATEGORIE POUR LAJOUTER A ID_CATEGORIE PLUS BAS
+
+        displayCategorie();
         
+        do {
+            System.out.println("Veuillez Choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int id_categorie = scanner.nextInt();
+
+        Categorie c = cdao.getById(id_categorie);
+
+        if (c == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (c == null);
+            id_categorie = scanner.nextInt();
+        }
+
         System.out.println("Veuillez entrer le nom du produit : ");
         String title = scanner.nextLine();
-
+        
         do {
-            /*FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION*/
             System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
             scanner.next();
         } while (!scanner.hasNextDouble());
         Double price = scanner.nextDouble();
 
         do {
-            /*FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION*/
             System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
             scanner.next();
         } while (!scanner.hasNextInt());
@@ -118,11 +139,104 @@ public class Main {
 
         p.setTitre(title);
         p.setPrix(price);
-        //ID CATEGORIE A FAIRE 
-        //p.setId_categorie();
+        p.setId_categorie(id_categorie);
         p.setStock(stock);
 
         pdao.save(p);
+    }
+
+    /*
+     * FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION
+     * Rajouter lid categorie
+    */
+    public static void modifyProduct() {
+        ProduitDAO pdao = new ProduitDAO();
+        CategorieDAO cdao = new CategorieDAO();
+        
+        System.out.println("------ Modification de Produit ------");
+        displayProduct();
+
+        System.out.println("Veuillez entrer l'id du produit a modifier : ");
+        int Userchoice = scanner.nextInt();
+        Produit p = pdao.getById(Userchoice);
+
+        if (p != null) {
+            displayCategorie();
+        
+            do {
+                System.out.println("Veuillez Choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+                scanner.next();
+            } while (!scanner.hasNextInt());
+            int id_categorie = scanner.nextInt();
+
+            Categorie c = cdao.getById(id_categorie);
+
+            if (c == null) {
+                do {
+                    System.out.println("Veuillez entrer un ID existant : ");
+                    scanner.next();
+                } while (c == null);
+                id_categorie = scanner.nextInt();
+            }
+
+            System.out.println("Veuillez entrer le titre : ");
+            String title = scanner.nextLine();
+
+            do {
+            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+            scanner.next();
+            } while (!scanner.hasNextDouble());
+            Double price = scanner.nextDouble();
+            
+            do {
+                System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
+                scanner.next();
+            } while (!scanner.hasNextInt());
+            int stock = scanner.nextInt();
+
+            p.setTitre(title);
+            p.setPrix(price);
+            p.setStock(stock);
+            p.setId_categorie(Userchoice);
+            pdao.save(p);
+        } else {
+            System.out.println("Erreur, ID invalide");
+        }
+    }
+
+    public static void deleteProduct() {
+        ProduitDAO pdao = new ProduitDAO();
+        System.out.println("------ Suppresion d'un Produit ------");
+        displayProduct();
+
+        System.out.println("Veuillez entrer l'id du produit a supprimer : ");
+        int userChoice = scanner.nextInt();
+
+        if (pdao.getById(userChoice) != null) {
+            pdao.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
+        }
+    }
+
+    public static void searchProduct() {
+        ProduitDAO pdao =  new ProduitDAO();
+        System.out.println("------ Recherche d'un Produit ------");
+        /*flash*/
+        scanner.nextLine();
+
+        System.out.println("Veuillez entrer le terme de la recherche ");
+        String search = scanner.nextLine();
+
+        ArrayList<Produit> searchResults = pdao.searchProduct(search);
+        if (searchResults != null) {
+            System.out.println("Resultat de la recherche : ");
+            for (Produit produit : searchResults) {
+                System.out.println(produit);
+            }
+        } else {
+            System.out.println("Aucun resultat trouve pour : " + search);
+        }
     }
 
     public static void displayClient() {
@@ -137,6 +251,7 @@ public class Main {
         }
     }
 
+    
     public static void addClient() {
         Client c = new Client();
         ClientDAO cdao = new ClientDAO();
@@ -233,6 +348,72 @@ public class Main {
             }
         } else {
             System.out.println("Aucun resultat trouve pour : " + search);
+        }
+    }
+
+    public static void displayCategorie() {
+        ArrayList<Categorie> categories = new ArrayList<>();
+        CategorieDAO cdao = new CategorieDAO();
+
+        categories = cdao.getAll();
+
+        System.out.print("------ Affichage des Categories ------\n");
+        for (Categorie categorie : categories) {
+            System.out.println(categorie);
+        }
+    }
+
+    public static void addCategorie() {
+        Categorie c = new Categorie();
+        CategorieDAO cdao = new CategorieDAO();
+
+        System.out.println("------ Ajout de Categorie ------");
+        /*flash*/
+        scanner.nextLine();
+
+        System.out.println("Veuillez entrer le nom de la categorie: ");
+        String title = scanner.nextLine();
+
+        c.setTitre(title);
+
+        cdao.save(c);
+    }
+    
+    public static void modifyCategorie() {
+        CategorieDAO cdao = new CategorieDAO();
+        System.out.println("------ Modification de Categorie ------");
+        displayCategorie();
+
+        System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
+        int Userchoice = scanner.nextInt();
+        Categorie c = cdao.getById(Userchoice);
+
+        if (c != null) {
+            /* flash */
+            scanner.nextLine();
+
+            System.out.println("Veuillez entrer le titre de la categorie a modifer : ");
+            String titre = scanner.nextLine();
+
+            c.setTitre(titre);
+            cdao.save(c);
+        } else {
+            System.out.println("Erreur, ID invalide");
+        }
+    }
+
+    public static void deleteCategorie() {
+        CategorieDAO cdao = new CategorieDAO();
+        System.out.println("------ Suppresion d'une Categorie ------");
+        displayCategorie();
+
+        System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
+        int userChoice = scanner.nextInt();
+
+        if (cdao.getById(userChoice) != null) {
+            cdao.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
         }
     }
 
