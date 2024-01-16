@@ -673,7 +673,6 @@ public class Main {
         Paiement paiement = new Paiement();
 
         PaiementDAO paiementDAO = new PaiementDAO();
-        CommandeDAO commandeDAO = new CommandeDAO();
 
         System.out.println("------ Paiement ------");
 
@@ -683,39 +682,28 @@ public class Main {
             System.out.println("Veuillez Choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             scanner.next();
         } while (!scanner.hasNextInt());
-        int id_facture = scanner.nextInt();
+        int id_commande = scanner.nextInt();
 
-        paiement = paiementDAO.getByIdFacture(id_facture);
+        
+        paiement = paiementDAO.getByIdCommande(id_commande);
 
         if (paiement == null) {
             do {
                 System.out.println("Veuillez entrer un ID existant : ");
                 scanner.next();
             } while (paiement == null);
-            id_categorie = scanner.nextInt();
+            id_commande = scanner.nextInt();
         }
-
-        System.out.println("Veuillez entrer le nom du produit : ");
-        String title = scanner.nextLine();
         
         do {
-            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+            System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
             scanner.next();
         } while (!scanner.hasNextDouble());
         Double price = scanner.nextDouble();
 
-        do {
-            System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int stock = scanner.nextInt();
+        paiement.setMontant(price);
 
-        p.setTitre(title);
-        p.setPrix(price);
-        p.setId_categorie(id_categorie);
-        p.setStock(stock);
-
-        pdao.save(p);
+        paiementDAO.save(paiement);
     }
 
     /*A revoir ENTIEREMENT PROBLEME DE CONCEPTION DANS LA MANIERE DE GERER LES CONTROLES DE SAISI */
@@ -749,6 +737,21 @@ public class Main {
         int price = scanner.nextInt();
 
         paiement.setMontant(price);
+    }
+
+    public static void deletePaiement() {
+        PaiementDAO paiementDAO = new PaiementDAO();
+        System.out.println("------ Suppresion d'un Paiement ------");
+        displayProduct();
+
+        System.out.println("Veuillez entrer l'id du paiement a supprimer : ");
+        int userChoice = scanner.nextInt();
+
+        if (paiementDAO.getById(userChoice) != null) {
+            paiementDAO.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
+        }
     }
 
     public static int menu() {

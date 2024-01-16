@@ -4,22 +4,22 @@ import java.sql.Date;
 
 public class Paiement {
     private int id;
-    private int id_facture;
+    private int id_commande;
     private double montant;
     private Date dateP;
 
     public Paiement() {
     }
 
-    public Paiement(int id_facture, double montant, Date dateP) {
-        this.id_facture = id_facture;
+    public Paiement(int id_commande, double montant, Date dateP) {
+        this.id_commande = id_commande;
         this.montant = montant;
         this.dateP = dateP;
     }
 
-    public Paiement(int id, int id_facture, double montant, Date dateP) {
+    public Paiement(int id, int id_commande, double montant, Date dateP) {
         this.id = id;
-        this.id_facture = id_facture;
+        this.id_commande = id_commande;
         this.montant = montant;
         this.dateP = dateP;
     }
@@ -32,12 +32,12 @@ public class Paiement {
         this.id = id;
     }
 
-    public int getId_facture() {
-        return this.id_facture;
+    public int getId_commande() {
+        return this.id_commande;
     }
 
-    public void setId_facture(int id_facture) {
-        this.id_facture = id_facture;
+    public void setId_commande(int id_commande) {
+        this.id_commande = id_commande;
     }
 
     public double getMontant() {
@@ -61,8 +61,8 @@ public class Paiement {
         return this;
     }
 
-    public Paiement id_facture(int id_facture) {
-        setId_facture(id_facture);
+    public Paiement id_commande(int id_commande) {
+        setId_commande(id_commande);
         return this;
     }
 
@@ -80,7 +80,7 @@ public class Paiement {
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", id_facture='" + getId_facture() + "'" +
+            ", id_commande='" + getId_commande() + "'" +
             ", montant='" + getMontant() + "'" +
             ", dateP='" + getDateP() + "'" +
             "}";

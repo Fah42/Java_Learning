@@ -13,14 +13,14 @@ public class PaiementDAO {
         try {
             if(paiement.getId() != 0) {
                 PreparedStatement ps = Database.connexion.prepareStatement("UPDATE paiement SET id_facture = ?, montant = ?, dateP = NOW() WHERE id = ?");
-                ps.setInt(1, paiement.getId_facture());
+                ps.setInt(1, paiement.getId_commande());
                 ps.setDouble(2, paiement.getMontant());
                 ps.setInt(3, paiement.getId());
                 ps.executeUpdate();
                 System.out.println("Update Ok !");
             } else {
                 PreparedStatement ps = Database.connexion.prepareStatement("INSERT INTO paiement (id_facture, montant, dateP) VALUES (?,?,NOW())");
-                ps.setInt(1, paiement.getId_facture());
+                ps.setInt(1, paiement.getId_commande());
                 ps.setDouble(2, paiement.getMontant());
                 ps.executeUpdate();
                 System.out.println("Insert Ok !");
@@ -40,7 +40,7 @@ public class PaiementDAO {
 
             Paiement u = new Paiement();
             u.setId(resultat.getInt("id"));
-            u.setId_facture(resultat.getInt("id_facture"));
+            u.setId_commande(resultat.getInt("id_facture"));
             u.setMontant(resultat.getDouble("montant"));
             u.setDateP(resultat.getDate("dateP"));
             return u;
@@ -58,7 +58,7 @@ public class PaiementDAO {
             while(resultat.next()) {
                 Paiement u = new Paiement();
                 u.setId(resultat.getInt("id"));
-                u.setId_facture(resultat.getInt("id_facture"));
+                u.setId_commande(resultat.getInt("id_facture"));
                 u.setMontant(resultat.getDouble("montant"));
                 u.setDateP(resultat.getDate("dateP"));
                 categories.add(u);
@@ -71,7 +71,7 @@ public class PaiementDAO {
         }
     }
 
-    public Paiement getByIdFacture(int id) {
+    public Paiement getByIdCommande(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM paiement WHERE id_facture = ?");
             ps.setInt(1, id);
@@ -80,7 +80,7 @@ public class PaiementDAO {
 
             Paiement u = new Paiement();
             u.setId(resultat.getInt("id"));
-            u.setId_facture(resultat.getInt("id_facture"));
+            u.setId_commande(resultat.getInt("id_facture"));
             u.setMontant(resultat.getDouble("montant"));
             u.setDateP(resultat.getDate("dateP"));
             return u;
