@@ -12,21 +12,19 @@ public class CommandeDAO {
     public void save(Commande commande) {
         try {
             if(commande.getId() != 0) {
-                PreparedStatement ps = Database.connexion.prepareStatement("UPDATE commande SET dateF = ?, id_client = ? WHERE id = ?");
-                ps.setDate(1, commande.getDateF());
-                ps.setInt(2, commande.getId_client());
-                ps.setInt(3, commande.getId());
+                PreparedStatement ps = Database.connexion.prepareStatement("UPDATE commande SET dateF = NOW(), id_client = ? WHERE id = ?");
+                ps.setInt(1, commande.getId_client());
+                ps.setInt(2, commande.getId());
                 ps.executeUpdate();
                 System.out.println("Update Ok !");
             } else {
-                PreparedStatement ps = Database.connexion.prepareStatement("INSERT INTO commande (dateF, id_client) VALUES (?,?)");
-                ps.setDate(1, commande.getDateF());
-                ps.setInt(2, commande.getId_client());
+                PreparedStatement ps = Database.connexion.prepareStatement("INSERT INTO commande (dateF, id_client) VALUES (NOW(),?)");
+                ps.setInt(1, commande.getId_client());
                 ps.executeUpdate();
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("ERROR");
         }
     }

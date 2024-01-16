@@ -6,6 +6,7 @@ import entites.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.sql.Date;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
@@ -428,7 +429,51 @@ public class Main {
         }
     }
 
-    
+    public static void addOrder() {
+        Commande commande = new Commande();
+        CommandeDAO commandedao = new CommandeDAO();
+        ClientDAO clientdao = new ClientDAO();
+
+        System.out.println("------ Ajout de Commande ------");
+
+        displayClient();
+        
+        do {
+            System.out.println("Veuillez Choisir a quel client appartiendra la commande en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int id_client = scanner.nextInt();
+
+        Client client = clientdao.getById(id_client);
+
+        if (client == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (commande == null);
+            id_client = scanner.nextInt();
+        }
+
+        commande.setDateF(new Date(0));
+        commande.setId_client(id_client);
+
+        commandedao.save(commande);
+    }
+
+    public static void deleteOrder() {
+        CommandeDAO commandeDAO = new CommandeDAO();
+        System.out.println("------ Suppresion d'une Commande ------");
+        displayOrder();
+
+        System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
+        int userChoice = scanner.nextInt();
+
+        if (commandeDAO.getById(userChoice) != null) {
+            commandeDAO.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
+        }
+    }
 
     public static int menu() {
         System.out.println("\n------ Menu de Gestion ------");
