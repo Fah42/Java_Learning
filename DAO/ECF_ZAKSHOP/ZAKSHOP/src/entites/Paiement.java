@@ -1,23 +1,23 @@
 package entites;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Paiement {
     private int id;
     private int id_facture;
     private double montant;
-    private Timestamp dateP;
+    private Date dateP;
 
     public Paiement() {
     }
 
-    public Paiement(int id_facture, double montant, Timestamp dateP) {
+    public Paiement(int id_facture, double montant, Date dateP) {
         this.id_facture = id_facture;
         this.montant = montant;
         this.dateP = dateP;
     }
 
-    public Paiement(int id, int id_facture, double montant, Timestamp dateP) {
+    public Paiement(int id, int id_facture, double montant, Date dateP) {
         this.id = id;
         this.id_facture = id_facture;
         this.montant = montant;
@@ -48,11 +48,11 @@ public class Paiement {
         this.montant = montant;
     }
 
-    public Timestamp getDateP() {
+    public Date getDateP() {
         return this.dateP;
     }
 
-    public void setDateP(Timestamp dateP) {
+    public void setDateP(Date dateP) {
         this.dateP = dateP;
     }
 
@@ -71,7 +71,7 @@ public class Paiement {
         return this;
     }
 
-    public Paiement dateP(Timestamp dateP) {
+    public Paiement dateP(Date dateP) {
         setDateP(dateP);
         return this;
     }

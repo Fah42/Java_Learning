@@ -1,26 +1,26 @@
 package entites;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Entree_stock {
     private int id;
     private int id_produit;
     private int id_fournisseur;
     private int quantite;
-    private Timestamp dateE;
+    private Date dateE;
 
 
     public Entree_stock() {
     }
 
-    public Entree_stock(int id_produit, int id_fournisseur, int quantite, Timestamp dateE) {
+    public Entree_stock(int id_produit, int id_fournisseur, int quantite, Date dateE) {
         this.id_produit = id_produit;
         this.id_fournisseur = id_fournisseur;
         this.quantite = quantite;
         this.dateE = dateE;
     }
 
-    public Entree_stock(int id, int id_produit, int id_fournisseur, int quantite, Timestamp dateE) {
+    public Entree_stock(int id, int id_produit, int id_fournisseur, int quantite, Date dateE) {
         this.id = id;
         this.id_produit = id_produit;
         this.id_fournisseur = id_fournisseur;
@@ -60,11 +60,11 @@ public class Entree_stock {
         this.quantite = quantite;
     }
 
-    public Timestamp getDateE() {
+    public Date getDateE() {
         return this.dateE;
     }
 
-    public void setDateE(Timestamp dateE) {
+    public void setDateE(Date dateE) {
         this.dateE = dateE;
     }
 
@@ -88,7 +88,7 @@ public class Entree_stock {
         return this;
     }
 
-    public Entree_stock dateE(Timestamp dateE) {
+    public Entree_stock dateE(Date dateE) {
         setDateE(dateE);
         return this;
     }

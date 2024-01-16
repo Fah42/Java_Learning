@@ -3,10 +3,8 @@ package vues;
 import dao.*;
 import entites.*;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.sql.Date;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
@@ -52,27 +50,27 @@ public class Main {
             } else if (Userchoice == 17) {
                 deleteOrder();  
             } else if (Userchoice == 18) {
-                    
+                displaySupplier();
             } else if (Userchoice == 19) {
-                    
+                addSupplier();
             } else if (Userchoice == 20) {
-                    
+                modifySupplier();
             } else if (Userchoice == 21) {
-                    
+                deleteSupplier();
             } else if (Userchoice == 22) {
-                    
+                displayStock();
             } else if (Userchoice == 23) {
-                    
+                addStock();
             } else if (Userchoice == 23) {
-                    
+                deleteStock();
             } else if (Userchoice == 24) {
-                    
+                displayPaiement();
             } else if (Userchoice == 25) {
-                    
+                addPaiement();
             } else if (Userchoice == 26) {
-                    
+                modifyPaiement();
             } else if (Userchoice == 27) {
-                    
+                deletePaiement();
             } else if (Userchoice == 28) {
                     
             } else if (Userchoice == 29) {
@@ -454,7 +452,6 @@ public class Main {
             id_client = scanner.nextInt();
         }
 
-        commande.setDateF(new Date(0));
         commande.setId_client(id_client);
 
         commandedao.save(commande);
@@ -473,6 +470,222 @@ public class Main {
         } else {
             System.out.println("Erreur ID invalide");
         }
+    }
+
+    public static void displaySupplier() {
+        ArrayList<Fournisseur> fournisseurs = new ArrayList<>();
+        FournisseurDAO fournisseurDAO = new FournisseurDAO();
+
+        fournisseurs = fournisseurDAO.getAll();
+
+        System.out.print("------ Affichage des Produits ------\n");
+        for (Fournisseur produit : fournisseurs) {
+            System.out.println(produit);
+        }
+    }
+    
+    public static void addSupplier() {
+        Fournisseur fournisseur = new Fournisseur();
+
+        FournisseurDAO fournisseurDAO = new FournisseurDAO();
+
+        System.out.println("------ Ajout de Fournisseur ------");
+
+        displaySupplier();
+
+        System.out.println("Veuillez entrer le nom du fournisseur : ");
+        String name = scanner.nextLine();
+        System.out.println("Veuillez entrer la ville du fournisseur : ");
+        String city = scanner.nextLine();
+
+        fournisseur.setNom(name);
+        fournisseur.setVille(city);
+
+        fournisseurDAO.save(fournisseur);
+    }
+
+    public static void modifySupplier() {
+        FournisseurDAO fournisseurDAO = new FournisseurDAO();
+
+        System.out.println("------ Modification de Fournisseur ------");
+        displaySupplier();
+
+        do {
+            System.out.println("Veuillez entrer l'id du fournisseur a modifier en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int userChoice = scanner.nextInt();
+
+        Fournisseur fournisseur = fournisseurDAO.getById(userChoice);
+
+        if (fournisseur == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (fournisseur == null);
+            userChoice = scanner.nextInt();
+        }
+
+        System.out.println("Veuillez entrer le titre : ");
+        String title = scanner.nextLine();
+        System.out.println("Veuillez entrer la ville");
+        String city = scanner.nextLine();
+
+        fournisseur.setNom(title);
+        fournisseur.setVille(city);
+        fournisseurDAO.save(fournisseur);
+    }
+
+    public static void deleteSupplier() {
+        FournisseurDAO fournisseurDAO = new FournisseurDAO();
+        System.out.println("------ Suppresion d'un Fourniseur ------");
+        displaySupplier();
+
+        System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
+        int userChoice = scanner.nextInt();
+
+        if (fournisseurDAO.getById(userChoice) != null) {
+            fournisseurDAO.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
+        }
+    }
+
+    public static void displayStock() {
+        ArrayList<Entree_stock> stocks = new ArrayList<>();
+        Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+
+        stocks = entree_stockDAO.getAll();
+
+        System.out.print("------ Affichage des Stock ------\n");
+        for (Entree_stock entree_stock : stocks) {
+            System.out.println(entree_stock);
+        }
+    }
+
+    public static void addStock() {
+        Entree_stock entree_stock = new Entree_stock();
+
+        Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        ProduitDAO produitDAO = new ProduitDAO();
+        FournisseurDAO fournisseurDAO = new FournisseurDAO();
+
+        System.out.println("------ Ajout d'une Entree Stock ------");
+
+        displayStock();
+        displayProduct();
+        do {
+            System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int id_produit = scanner.nextInt();
+
+        Produit produit = produitDAO.getById(id_produit);
+
+        if (produit == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (produit == null);
+            id_produit = scanner.nextInt();
+        }
+
+        displaySupplier();
+        do {
+            System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int id_fournisseur = scanner.nextInt();
+
+        Fournisseur fournisseur = fournisseurDAO.getById(id_fournisseur);
+
+        if (fournisseur == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (fournisseur == null);
+            id_fournisseur = scanner.nextInt();
+        }
+
+        System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");   
+        do {
+            System.out.println("Veuillez entrer la quantite de produit uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int quantite = scanner.nextInt();
+
+        entree_stock.setId_produit(id_produit);
+        entree_stock.setId_fournisseur(id_fournisseur);
+        entree_stock.setQuantite(quantite);
+
+        entree_stockDAO.save(entree_stock);
+    }
+
+    public static void deleteStock() {
+        Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        System.out.println("------ Suppresion d'un Fourniseur ------");
+        displayStock();
+
+        do {
+            System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int userChoice = scanner.nextInt();
+
+        if (entree_stockDAO.getById(userChoice) != null) {
+            entree_stockDAO.deleteById(userChoice);
+        } else {
+            System.out.println("Erreur ID invalide");
+        }
+    }
+
+    public static void addPaiement() {
+        Produit p = new Produit();
+
+        ProduitDAO pdao = new ProduitDAO();
+        CategorieDAO cdao = new CategorieDAO();
+
+        System.out.println("------ Ajout de Produit ------");
+
+        displayCategorie();
+        
+        do {
+            System.out.println("Veuillez Choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int id_categorie = scanner.nextInt();
+
+        Categorie c = cdao.getById(id_categorie);
+
+        if (c == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (c == null);
+            id_categorie = scanner.nextInt();
+        }
+
+        System.out.println("Veuillez entrer le nom du produit : ");
+        String title = scanner.nextLine();
+        
+        do {
+            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextDouble());
+        Double price = scanner.nextDouble();
+
+        do {
+            System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int stock = scanner.nextInt();
+
+        p.setTitre(title);
+        p.setPrix(price);
+        p.setId_categorie(id_categorie);
+        p.setStock(stock);
+
+        pdao.save(p);
     }
 
     public static int menu() {
@@ -494,7 +707,7 @@ public class Main {
         System.out.println("15- Liste des Commandes");
         System.out.println("16- Passer une Commande");
         System.out.println("17- Supprimer une Commande");
-        System.out.println("18-  Liste des Fournisseurs");
+        System.out.println("18- Liste des Fournisseurs");
         System.out.println("19- Ajouter un Fournisseur");
         System.out.println("20- Modifier un Fournisseur");
         System.out.println("21- Supprimer un Fournisseur");
