@@ -54,6 +54,26 @@ public class DetailDAO {
             return null;
         }
     }
+    
+    public Detail getByIdProduct(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM details WHERE id_produit = ?");
+            ps.setInt(1, id);
+            ResultSet resultat = ps.executeQuery();
+            resultat.next();
+
+            Detail u = new Detail();
+            u.setId(resultat.getInt("id"));
+            u.setQuantite(resultat.getInt("quantite"));
+            u.setPrixU(resultat.getDouble("prixU"));
+            u.setId_commande(resultat.getInt("id_commande"));
+            u.setId_produit(resultat.getInt("id_produit"));
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public ArrayList<Detail> getAll() {
         ArrayList<Detail> categories = new ArrayList<>();
@@ -80,6 +100,18 @@ public class DetailDAO {
     public void deleteById(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM details WHERE id = ?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Detail Deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR");
+        }
+    }
+
+    public void deleteByIdProduct(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM details WHERE id_produit = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             System.out.println("Detail Deleted");

@@ -32,16 +32,26 @@ public class Fournisseur {
         return this.nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public boolean setNom(String nom) {
+        if (nom.length() > 50 || nom.length() <= 0 ||nom == null) {
+            return false;
+        } else {
+            this.nom = nom;
+            return true;
+        }
     }
 
     public String getVille() {
         return this.ville;
     }
 
-    public void setVille(String ville) {
-        this.ville = ville;
+    public boolean setVille(String ville) {
+        if (ville.length() > 50 || ville.length() <= 0 ||ville == null) {
+            return false;
+        } else {
+            this.ville = ville;
+            return true;
+        }
     }
     
     @Override

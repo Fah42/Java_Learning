@@ -68,31 +68,6 @@ public class Entree_stock {
         this.dateE = dateE;
     }
 
-    public Entree_stock id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Entree_stock id_produit(int id_produit) {
-        setId_produit(id_produit);
-        return this;
-    }
-
-    public Entree_stock id_fournisseur(int id_fournisseur) {
-        setId_fournisseur(id_fournisseur);
-        return this;
-    }
-
-    public Entree_stock quantite(int quantite) {
-        setQuantite(quantite);
-        return this;
-    }
-
-    public Entree_stock dateE(Date dateE) {
-        setDateE(dateE);
-        return this;
-    }
-
     @Override
     public String toString() {
         return "{" +
