@@ -37,8 +37,13 @@ public class Produit {
         return this.titre;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public boolean setTitre(String titre) {
+        if (titre.length() > 50 || titre.length() <= 0 ||titre == null) {
+            return false;
+        } else {
+            this.titre = titre;
+            return true;
+        }
     }
 
     public double getPrix() {
@@ -63,31 +68,6 @@ public class Produit {
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public Produit id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Produit titre(String titre) {
-        setTitre(titre);
-        return this;
-    }
-
-    public Produit prix(double prix) {
-        setPrix(prix);
-        return this;
-    }
-
-    public Produit id_categorie(int id_categorie) {
-        setId_categorie(id_categorie);
-        return this;
-    }
-
-    public Produit stock(int stock) {
-        setStock(stock);
-        return this;
     }
 
     @Override

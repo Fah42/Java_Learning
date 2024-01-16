@@ -43,22 +43,7 @@ public class Fournisseur {
     public void setVille(String ville) {
         this.ville = ville;
     }
-
-    public Fournisseur id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Fournisseur nom(String nom) {
-        setNom(nom);
-        return this;
-    }
-
-    public Fournisseur ville(String ville) {
-        setVille(ville);
-        return this;
-    }
-
+    
     @Override
     public String toString() {
         return "{" +

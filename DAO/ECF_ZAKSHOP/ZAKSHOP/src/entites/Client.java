@@ -37,16 +37,26 @@ public class Client {
         return this.nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public boolean setNom(String nom) {
+        if (nom.length() > 40 || nom.length() <= 0 ||nom == null){
+            return false;
+        } else {
+            this.nom = nom;
+            return true;
+        }
     }
 
     public String getVille() {
         return this.ville;
     }
 
-    public void setVille(String ville) {
-        this.ville = ville;
+    public boolean setVille(String ville) {
+        if (ville.length() > 40 || ville.length() <= 0 ||ville == null) {
+            return false;
+        } else {
+            this.ville = ville;
+            return true;
+        }
     }
 
     public int getAge() {
@@ -61,33 +71,13 @@ public class Client {
         return this.prenom;
     }
 
-    public void setPrenom(String prenom) {
+    public boolean setPrenom(String prenom) {
+        if (prenom.length() > 50 || prenom.length() <= 0 ||prenom == null) {
+            return false;
+        } else {
         this.prenom = prenom;
-    }
-
-    public Client id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Client nom(String nom) {
-        setNom(nom);
-        return this;
-    }
-
-    public Client ville(String ville) {
-        setVille(ville);
-        return this;
-    }
-
-    public Client age(int age) {
-        setAge(age);
-        return this;
-    }
-
-    public Client prenom(String prenom) {
-        setPrenom(prenom);
-        return this;
+        return true;
+        }
     }
 
     @Override

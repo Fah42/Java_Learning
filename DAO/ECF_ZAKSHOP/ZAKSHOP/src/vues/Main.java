@@ -134,10 +134,14 @@ public class Main {
         } while (!scanner.hasNextInt());
         int stock = scanner.nextInt();
 
-        p.setTitre(title);
-        p.setPrix(price);
-        p.setId_categorie(id_categorie);
-        p.setStock(stock);
+        if(p.setTitre(title)) {
+            p.setPrix(price);
+            p.setId_categorie(id_categorie);
+            p.setStock(stock);
+            System.out.println("Ajout reussi !");
+        } else {
+            System.out.println("Ajout echoue car chaine trop longue ou vide !");
+        }
 
         pdao.save(p);
     }
@@ -370,9 +374,12 @@ public class Main {
         System.out.println("Veuillez entrer le nom de la categorie: ");
         String title = scanner.nextLine();
 
-        c.setTitre(title);
-
-        cdao.save(c);
+        if (c.setTitre(title)) {
+            System.out.println("Saisie reussi");
+            cdao.save(c);
+        } else {
+            System.out.println("La titre n'a pas pu etre modifie car le nombre de character a depasse la limite de 50 ou bien vous y avez inserer un charactere vide.");
+        }
     }
     
     public static void modifyCategorie() {

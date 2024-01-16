@@ -28,18 +28,13 @@ public class Categorie {
         return this.titre;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public Categorie id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Categorie titre(String titre) {
-        setTitre(titre);
-        return this;
+    public boolean setTitre(String titre) {
+        if (titre.length() > 50 || titre.length() <= 0 ||titre == null) {
+            return false;
+        } else {
+            this.titre = titre;
+            return true;
+        }
     }
 
     @Override
