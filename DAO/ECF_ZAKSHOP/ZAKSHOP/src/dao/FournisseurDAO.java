@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import entites.Client;
 import entites.Database;
 import entites.Fournisseur;
 
@@ -78,6 +79,28 @@ public class FournisseurDAO {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERROR");
+        }
+    }
+
+    public ArrayList<Fournisseur> searchSupplier(String searchTerm) {
+        ArrayList<Fournisseur> clients = new ArrayList<>();
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM fournisseur WHERE nom LIKE ? OR vikke LIKE ?");
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            ResultSet resultat = ps.executeQuery();
+            while (resultat.next()) {
+                Fournisseur client = new Fournisseur();
+                client.setId(resultat.getInt("id"));
+                client.setNom(resultat.getString("nom"));
+                client.setVille(resultat.getString("ville"));
+                clients.add(client);
+            }
+            return clients;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche de clients");
+            return null;
         }
     }
 }

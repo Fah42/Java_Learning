@@ -71,6 +71,25 @@ public class PaiementDAO {
         }
     }
 
+    public Paiement getByIdFacture(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM paiement WHERE id_facture = ?");
+            ps.setInt(1, id);
+            ResultSet resultat = ps.executeQuery();
+            resultat.next();
+
+            Paiement u = new Paiement();
+            u.setId(resultat.getInt("id"));
+            u.setId_facture(resultat.getInt("id_facture"));
+            u.setMontant(resultat.getDouble("montant"));
+            u.setDateP(resultat.getDate("dateP"));
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void deleteById(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM paiement WHERE id = ?");

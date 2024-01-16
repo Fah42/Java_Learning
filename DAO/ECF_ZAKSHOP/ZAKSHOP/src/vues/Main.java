@@ -58,23 +58,21 @@ public class Main {
             } else if (Userchoice == 21) {
                 deleteSupplier();
             } else if (Userchoice == 22) {
+                searchSupplier();
+            } else if (Userchoice == 23) {
                 displayStock();
-            } else if (Userchoice == 23) {
-                addStock();
-            } else if (Userchoice == 23) {
-                deleteStock();
             } else if (Userchoice == 24) {
-                displayPaiement();
+                addStock();
             } else if (Userchoice == 25) {
-                addPaiement();
+                deleteStock();
             } else if (Userchoice == 26) {
-                modifyPaiement();
+                displayPaiement();
             } else if (Userchoice == 27) {
-                deletePaiement();
+                addPaiement();
             } else if (Userchoice == 28) {
-                    
+                modifyPaiement();
             } else if (Userchoice == 29) {
-                    
+                deletePaiement(); 
             }
         }
     }
@@ -551,6 +549,26 @@ public class Main {
         }
     }
 
+    public static void searchSupplier() {
+        FournisseurDAO cdao =  new FournisseurDAO();
+        System.out.println("------ Recherche de Fournisseur ------");
+        /*flash*/
+        scanner.nextLine();
+
+        System.out.println("Veuillez entrer le terme de la recherche ");
+        String search = scanner.nextLine();
+
+        ArrayList<Fournisseur> searchResults = cdao.searchSupplier(search);
+        if (searchResults != null) {
+            System.out.println("Resultat de la recherche : ");
+            for (Fournisseur fournisseur : searchResults) {
+                System.out.println(fournisseur);
+            }
+        } else {
+            System.out.println("Aucun resultat trouve pour : " + search);
+        }
+    }
+
     public static void displayStock() {
         ArrayList<Entree_stock> stocks = new ArrayList<>();
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
@@ -638,30 +656,42 @@ public class Main {
             System.out.println("Erreur ID invalide");
         }
     }
+    
+    public static void displayPaiement() {
+        ArrayList<Paiement> paiements = new ArrayList<>();
+        PaiementDAO paiementDAO = new PaiementDAO();
+
+        paiements = paiementDAO.getAll();
+
+        System.out.print("------ Affichage des Paiements ------\n");
+        for (Paiement paiement : paiements) {
+            System.out.println(paiement);
+        }
+    }
 
     public static void addPaiement() {
-        Produit p = new Produit();
+        Paiement paiement = new Paiement();
 
-        ProduitDAO pdao = new ProduitDAO();
-        CategorieDAO cdao = new CategorieDAO();
+        PaiementDAO paiementDAO = new PaiementDAO();
+        CommandeDAO commandeDAO = new CommandeDAO();
 
-        System.out.println("------ Ajout de Produit ------");
+        System.out.println("------ Paiement ------");
 
-        displayCategorie();
-        
+        displayPaiement();
+        displayOrder();
         do {
-            System.out.println("Veuillez Choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            System.out.println("Veuillez Choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             scanner.next();
         } while (!scanner.hasNextInt());
-        int id_categorie = scanner.nextInt();
+        int id_facture = scanner.nextInt();
 
-        Categorie c = cdao.getById(id_categorie);
+        paiement = paiementDAO.getByIdFacture(id_facture);
 
-        if (c == null) {
+        if (paiement == null) {
             do {
                 System.out.println("Veuillez entrer un ID existant : ");
                 scanner.next();
-            } while (c == null);
+            } while (paiement == null);
             id_categorie = scanner.nextInt();
         }
 
@@ -686,6 +716,39 @@ public class Main {
         p.setStock(stock);
 
         pdao.save(p);
+    }
+
+    /*A revoir ENTIEREMENT PROBLEME DE CONCEPTION DANS LA MANIERE DE GERER LES CONTROLES DE SAISI */
+    public static void modifyPaiement() {
+        PaiementDAO paiementDAO = new PaiementDAO();
+
+        System.out.println("------ Modification de Paiement ------");
+        displayPaiement();
+
+        do {
+            System.out.println("Veuillez entrer l'id du paiement a modifier en utilisant uniquement des caracteres numerique : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int userChoice = scanner.nextInt();
+
+        Paiement paiement = paiementDAO.getById(userChoice);
+
+        if (paiement == null) {
+            do {
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } while (paiement == null);
+            userChoice = scanner.nextInt();
+        }
+        paiement = paiementDAO.getById(userChoice);
+
+        do {
+            System.out.println("Veuillez entrer un prix en chiffre uniquement : ");
+            scanner.next();
+        } while (!scanner.hasNextInt());
+        int price = scanner.nextInt();
+
+        paiement.setMontant(price);
     }
 
     public static int menu() {
