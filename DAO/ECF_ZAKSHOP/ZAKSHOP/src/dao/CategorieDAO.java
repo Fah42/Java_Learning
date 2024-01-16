@@ -14,7 +14,7 @@ public class CategorieDAO {
             if(categorie.getId() != 0) {
                 PreparedStatement ps = Database.connexion.prepareStatement("UPDATE categorie SET titre = ? WHERE id = ?");
                 ps.setString(1, categorie.getTitre());
-                ps.setInt(5, categorie.getId());
+                ps.setInt(2, categorie.getId());
                 ps.executeUpdate();
                 System.out.println("Update Ok !");
             } else {

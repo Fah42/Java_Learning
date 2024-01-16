@@ -45,11 +45,11 @@ public class Main {
             } else if (Userchoice == 14) {
                 deleteCategorie(); 
             } else if (Userchoice == 15) {
-
+                displayOrder();
             } else if (Userchoice == 16) {
-                    
+                addOrder();
             } else if (Userchoice == 17) {
-                    
+                deleteOrder();  
             } else if (Userchoice == 18) {
                     
             } else if (Userchoice == 19) {
@@ -147,12 +147,11 @@ public class Main {
 
     /*
      * FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION
-     * Rajouter lid categorie
     */
     public static void modifyProduct() {
         ProduitDAO pdao = new ProduitDAO();
         CategorieDAO cdao = new CategorieDAO();
-        
+
         System.out.println("------ Modification de Produit ------");
         displayProduct();
 
@@ -392,7 +391,7 @@ public class Main {
             /* flash */
             scanner.nextLine();
 
-            System.out.println("Veuillez entrer le titre de la categorie a modifer : ");
+            System.out.println("Ancien nom : " + c.getTitre() + "\nVeuillez entrer le nouveau titre : ");
             String titre = scanner.nextLine();
 
             c.setTitre(titre);
@@ -416,6 +415,20 @@ public class Main {
             System.out.println("Erreur ID invalide");
         }
     }
+
+    public static void displayOrder() {
+        ArrayList<Commande> commandes = new ArrayList<>();
+        CommandeDAO cdao = new CommandeDAO();
+
+        commandes = cdao.getAll();
+
+        System.out.print("------ Affichage des Commandes ------\n");
+        for (Commande commande : commandes) {
+            System.out.println(commande);
+        }
+    }
+
+    
 
     public static int menu() {
         System.out.println("\n------ Menu de Gestion ------");

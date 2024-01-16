@@ -1,21 +1,21 @@
 package entites;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Commande {
     private int id;
-    private Timestamp dateF;
+    private Date dateF;
     private int id_client;
 
     public Commande() {
     }
 
-    public Commande(Timestamp dateF, int id_client) {
+    public Commande(Date dateF, int id_client) {
         this.dateF = dateF;
         this.id_client = id_client;
     }
 
-    public Commande(int id, Timestamp dateF, int id_client) {
+    public Commande(int id, Date dateF, int id_client) {
         this.id = id;
         this.dateF = dateF;
         this.id_client = id_client;
@@ -29,11 +29,11 @@ public class Commande {
         this.id = id;
     }
 
-    public Timestamp getDateF() {
+    public Date getDateF() {
         return this.dateF;
     }
 
-    public void setDateF(Timestamp dateF) {
+    public void setDateF(Date dateF) {
         this.dateF = dateF;
     }
 
@@ -50,7 +50,7 @@ public class Commande {
         return this;
     }
 
-    public Commande dateF(Timestamp dateF) {
+    public Commande dateF(Date dateF) {
         setDateF(dateF);
         return this;
     }
