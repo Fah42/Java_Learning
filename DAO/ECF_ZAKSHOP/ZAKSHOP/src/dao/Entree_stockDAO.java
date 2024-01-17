@@ -28,8 +28,7 @@ public class Entree_stockDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -48,7 +47,6 @@ public class Entree_stockDAO {
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -68,7 +66,6 @@ public class Entree_stockDAO {
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -88,7 +85,6 @@ public class Entree_stockDAO {
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -108,8 +104,6 @@ public class Entree_stockDAO {
             }
             return categories;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -121,8 +115,7 @@ public class Entree_stockDAO {
             ps.executeUpdate();
             System.out.println("Entree_stock Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -133,8 +126,7 @@ public class Entree_stockDAO {
             ps.executeUpdate();
             System.out.println("Entree_stock Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -145,8 +137,7 @@ public class Entree_stockDAO {
             ps.executeUpdate();
             System.out.println("Entree_stock Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 }

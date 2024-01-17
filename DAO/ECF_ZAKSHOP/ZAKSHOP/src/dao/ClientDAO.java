@@ -30,8 +30,7 @@ public class ClientDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -50,7 +49,6 @@ public class ClientDAO {
             u.setNom(resultat.getString("nom"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -71,8 +69,6 @@ public class ClientDAO {
             }
             return clients;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -84,8 +80,7 @@ public class ClientDAO {
             ps.executeUpdate();
             System.out.println("User Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -108,8 +103,6 @@ public class ClientDAO {
             }
             return clients;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la recherche de clients");
             return null;
         }
     }

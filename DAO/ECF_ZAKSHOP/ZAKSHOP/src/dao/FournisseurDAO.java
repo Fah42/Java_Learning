@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import entites.Client;
 import entites.Database;
 import entites.Fournisseur;
 
@@ -27,8 +26,7 @@ public class FournisseurDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -64,8 +62,6 @@ public class FournisseurDAO {
             }
             return fournisseurs;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -77,8 +73,7 @@ public class FournisseurDAO {
             ps.executeUpdate();
             System.out.println("Fournisseur Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -98,8 +93,6 @@ public class FournisseurDAO {
             }
             return clients;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la recherche de clients");
             return null;
         }
     }

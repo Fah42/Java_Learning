@@ -30,8 +30,7 @@ public class DetailDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -50,7 +49,6 @@ public class DetailDAO {
             u.setId_produit(resultat.getInt("id_produit"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -70,7 +68,6 @@ public class DetailDAO {
             u.setId_produit(resultat.getInt("id_produit"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -90,7 +87,6 @@ public class DetailDAO {
             u.setId_produit(resultat.getInt("id_produit"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -111,8 +107,6 @@ public class DetailDAO {
             }
             return categories;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -136,8 +130,7 @@ public class DetailDAO {
             ps.executeUpdate();
             System.out.println("Detail Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -148,8 +141,7 @@ public class DetailDAO {
             ps.executeUpdate();
             System.out.println("Detail Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 }

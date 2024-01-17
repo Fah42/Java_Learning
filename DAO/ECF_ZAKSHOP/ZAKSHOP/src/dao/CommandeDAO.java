@@ -42,7 +42,6 @@ public class CommandeDAO {
             u.setId_client(resultat.getInt("id_client"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -61,8 +60,6 @@ public class CommandeDAO {
             }
             return categories;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -74,8 +71,7 @@ public class CommandeDAO {
             ps.executeUpdate();
             System.out.println("Commande Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 }

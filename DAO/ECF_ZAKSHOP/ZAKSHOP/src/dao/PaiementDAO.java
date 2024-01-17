@@ -26,8 +26,7 @@ public class PaiementDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -45,7 +44,6 @@ public class PaiementDAO {
             u.setDateP(resultat.getDate("dateP"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -65,8 +63,6 @@ public class PaiementDAO {
             }
             return categories;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -85,7 +81,6 @@ public class PaiementDAO {
             u.setDateP(resultat.getDate("dateP"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -97,8 +92,7 @@ public class PaiementDAO {
             ps.executeUpdate();
             System.out.println("Paiement Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -109,8 +103,7 @@ public class PaiementDAO {
             ps.executeUpdate();
             System.out.println("Paiement Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 }

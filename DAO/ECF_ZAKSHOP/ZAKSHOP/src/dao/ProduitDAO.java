@@ -30,8 +30,7 @@ public class ProduitDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -50,7 +49,6 @@ public class ProduitDAO {
             u.setStock(resultat.getInt("stock"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -70,7 +68,6 @@ public class ProduitDAO {
             u.setStock(resultat.getInt("stock"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -90,9 +87,7 @@ public class ProduitDAO {
                 produits.add(u);
             }
             return produits;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+        } catch (Exception e) {;
             return null;
         }
     }
@@ -104,8 +99,7 @@ public class ProduitDAO {
             ps.executeUpdate();
             System.out.println("Produit Efface");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -116,8 +110,7 @@ public class ProduitDAO {
             ps.executeUpdate();
             System.out.println("Produit Efface");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -140,8 +133,6 @@ public class ProduitDAO {
             }
             return produits;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la recherche de produits");
             return null;
         }
     }

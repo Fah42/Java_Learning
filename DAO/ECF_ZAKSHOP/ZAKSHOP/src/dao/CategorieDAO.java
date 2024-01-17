@@ -24,8 +24,7 @@ public class CategorieDAO {
                 System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 
@@ -41,7 +40,6 @@ public class CategorieDAO {
             u.setTitre(resultat.getString("titre"));
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -59,8 +57,6 @@ public class CategorieDAO {
             }
             return categories;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
             return null;
         }
     }
@@ -72,8 +68,7 @@ public class CategorieDAO {
             ps.executeUpdate();
             System.out.println("Categorie Deleted");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR");
+            return;
         }
     }
 }
