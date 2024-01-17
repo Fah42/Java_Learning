@@ -55,6 +55,26 @@ public class ProduitDAO {
         }
     }
 
+    public Produit getByIdCategorie(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM produit WHERE id_categorie = ?");
+            ps.setInt(1, id);
+            ResultSet resultat = ps.executeQuery();
+            resultat.next();
+
+            Produit u = new Produit();
+            u.setId(resultat.getInt("id"));
+            u.setTitre(resultat.getString("titre"));
+            u.setPrix(resultat.getDouble("prix"));
+            u.setId_categorie(resultat.getInt("id_categorie"));
+            u.setStock(resultat.getInt("stock"));
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public ArrayList<Produit> getAll() {
         ArrayList<Produit> produits = new ArrayList<>();
         try {
@@ -80,6 +100,18 @@ public class ProduitDAO {
     public void deleteById(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM produit WHERE id = ?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Produit Efface");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR");
+        }
+    }
+
+    public void deleteByIdCategorie(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM produit WHERE id_categorie = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             System.out.println("Produit Efface");

@@ -12,66 +12,66 @@ public class Main {
     public static void main(String[] args) {
         Database.connect();
         
-        int Userchoice = 99;
-        while (Userchoice != 0) {
-            Userchoice = menu();
-            if (Userchoice == 1) {
+        int userChoice = 99;
+        while (userChoice != 0) {
+            userChoice = menu();
+            if (userChoice == 1) {
                 displayProduct();
-            } else if (Userchoice == 2) {
+            } else if (userChoice == 2) {
                 addProduct();
-            } else if (Userchoice == 3) {
+            } else if (userChoice == 3) {
                 modifyProduct();
-            } else if (Userchoice == 4) {
+            } else if (userChoice == 4) {
                 deleteProduct();
-            } else if (Userchoice == 5) {
+            } else if (userChoice == 5) {
                 searchProduct();
-            } else if (Userchoice == 6) {
+            } else if (userChoice == 6) {
                 displayClient();
-            } else if (Userchoice == 7) {
+            } else if (userChoice == 7) {
                 addClient();
-            } else if (Userchoice == 8) {
+            } else if (userChoice == 8) {
                 modifyClient();
-            } else if (Userchoice == 9) {
+            } else if (userChoice == 9) {
                 deleteClient();
-            } else if (Userchoice == 10) {
+            } else if (userChoice == 10) {
                 searchClient();
-            } else if (Userchoice == 11) {
+            } else if (userChoice == 11) {
                 displayCategorie();
-            } else if (Userchoice == 12) {
+            } else if (userChoice == 12) {
                 addCategorie();
-            } else if (Userchoice == 13) {
+            } else if (userChoice == 13) {
                 modifyCategorie();
-            } else if (Userchoice == 14) {
+            } else if (userChoice == 14) {
                 deleteCategorie(); 
-            } else if (Userchoice == 15) {
+            } else if (userChoice == 15) {
                 displayOrder();
-            } else if (Userchoice == 16) {
+            } else if (userChoice == 16) {
                 addOrder();
-            } else if (Userchoice == 17) {
+            } else if (userChoice == 17) {
                 deleteOrder();  
-            } else if (Userchoice == 18) {
+            } else if (userChoice == 18) {
                 displaySupplier();
-            } else if (Userchoice == 19) {
+            } else if (userChoice == 19) {
                 addSupplier();
-            } else if (Userchoice == 20) {
+            } else if (userChoice == 20) {
                 modifySupplier();
-            } else if (Userchoice == 21) {
+            } else if (userChoice == 21) {
                 deleteSupplier();
-            } else if (Userchoice == 22) {
+            } else if (userChoice == 22) {
                 searchSupplier();
-            } else if (Userchoice == 23) {
+            } else if (userChoice == 23) {
                 displayStock();
-            } else if (Userchoice == 24) {
+            } else if (userChoice == 24) {
                 addStock();
-            } else if (Userchoice == 25) {
+            } else if (userChoice == 25) {
                 deleteStock();
-            } else if (Userchoice == 26) {
+            } else if (userChoice == 26) {
                 displayPaiement();
-            } else if (Userchoice == 27) {
+            } else if (userChoice == 27) {
                 addPaiement();
-            } else if (Userchoice == 28) {
+            } else if (userChoice == 28) {
                 modifyPaiement();
-            } else if (Userchoice == 29) {
+            } else if (userChoice == 29) {
                 deletePaiement(); 
             }
         }
@@ -89,26 +89,26 @@ public class Main {
         }
     }
 
-    /*
-     * FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION
-    */
-
     public static void addProduct() {
-        Produit produit = new Produit();
-
         ProduitDAO produitDAO = new ProduitDAO();
+        Produit produit = new Produit();
         CategorieDAO categorieDAO = new CategorieDAO();
-
+        String title;
+        int id_categorie;
+        int stock;
+        Double price;
+        boolean isTitleValid = false;
+        
         System.out.println("------ Ajout de Produit ------");
-
         displayCategorie();
-        int id_categorie = 0;
+
         while (true) {
             System.out.println("Veuillez choisir à quelle catégorie appartiendra le produit en sélectionnant l'id correspondant, en utilisant uniquement des caractères numériques : ");
             if (scanner.hasNextInt()) {
+                id_categorie = scanner.nextInt();
                 if(categorieDAO.getById(id_categorie) != null) {
-                    id_categorie = scanner.nextInt();
-                    scanner.nextLine();
+                    produit.setId_categorie(id_categorie);
+                    scanner.next();
                     break;
                 }
                 System.out.println("Veuillez entrer un ID existant : ");
@@ -118,9 +118,6 @@ public class Main {
                 scanner.next();
             }
         }
-
-        String title;
-        boolean isTitleValid = false;
 
         while (!isTitleValid) {
             System.out.println("Veuillez entrer le nom du produit : ");
@@ -133,11 +130,11 @@ public class Main {
             }
         }
         
-        Double price = 0.0;
         while (true) {
             System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
             if (scanner.hasNextDouble()){
                 price = scanner.nextDouble();
+                produit.setPrix(price);
                 scanner.next();
                 break;
             } else {
@@ -145,39 +142,34 @@ public class Main {
             }
         }
 
-        int stock;
+        
         while(true) {
             System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
             if (scanner.hasNextInt()){
                 stock = scanner.nextInt();
+                produit.setStock(stock);
                 scanner.next();
                 break;
             } else {
-                System.out.println("La somme entré n'est pas valide. Veuillez réessayer.");
+                System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.");
             }
         }
-
-        produit.setPrix(price);
-        produit.setId_categorie(id_categorie);
-        produit.setStock(stock);
         System.out.println("Ajout reussi !");
-
         produitDAO.save(produit);
     }
 
-    /*
-     * FLASH QUI NE FONCTIONNE PAS ICI TODO TROUVER UNE SOLUTION
-    */
     public static void modifyProduct() {
         ProduitDAO produitDAO = new ProduitDAO();
-        CategorieDAO categorieDAO = new CategorieDAO();
-
-        System.out.println("------ Modification de Produit ------");
-        
-        Categorie categorie;
         Produit produit; 
+        CategorieDAO categorieDAO = new CategorieDAO();
+        String title;
         int userChoice;
         int id_categorie;
+        int stock;
+        Double price;
+        boolean isTitleValid = false;
+
+        System.out.println("------ Modification de Produit ------");
 
         while (true) {
             displayProduct();
@@ -190,6 +182,7 @@ public class Main {
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    scanner.next();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
@@ -203,8 +196,8 @@ public class Main {
                 System.out.println("Veuillez choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
                 id_categorie = scanner.nextInt();
                 scanner.nextLine();
-                categorie = categorieDAO.getById(id_categorie);
-                if (categorie != null) {
+                if (categorieDAO.getById(id_categorie) != null) {
+                    produit.setId_categorie(id_categorie);
                     break;
                 }
                 System.out.println("Veuillez entrer un ID existant : ");
@@ -212,9 +205,6 @@ public class Main {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier."); 
             }
         }
-
-        String title;
-        boolean isTitleValid = false;
 
         while (!isTitleValid) {
             System.out.println("Veuillez entrer le nom du produit : ");
@@ -227,23 +217,23 @@ public class Main {
             }
         }
 
-        Double price = 0.0;
         while (true) {
             System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
             if (scanner.hasNextDouble()){
                 price = scanner.nextDouble();
+                produit.setPrix(price);
                 scanner.next();
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
             }
         }
-                
-        int stock;
+
         while(true) {
             System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
             if (scanner.hasNextInt()){
                 stock = scanner.nextInt();
+                produit.setStock(stock);
                 scanner.next();
                 break;
             } else {
@@ -251,23 +241,17 @@ public class Main {
             }
         }
 
-        produit.setPrix(price);
-        produit.setId_categorie(id_categorie);
-        produit.setStock(stock);
-        System.out.println("Modification reussi !");
-
         produitDAO.save(produit);
+        System.out.println("Modification reussi !");
     }
 
     public static void deleteProduct() {
         ProduitDAO produitDAO = new ProduitDAO();
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
         DetailDAO detailDAO = new DetailDAO();
-
         int userChoice;
 
         System.out.println("------ Suppresion d'un Produit ------");
-        
         displayProduct();
         System.out.println("Veuillez entrer l'id du produit a supprimer en utilisant uniquement des chiffres : ");
         userChoice = scanner.nextInt();
@@ -286,14 +270,15 @@ public class Main {
     }
 
     public static void searchProduct() {
+        ArrayList<Produit> searchResults = new ArrayList<>();
         ProduitDAO produitDAO =  new ProduitDAO();
+        String search;
 
         System.out.println("------ Recherche d'un Produit ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
+        search = scanner.nextLine();
 
-        String search = scanner.nextLine();
-
-        ArrayList<Produit> searchResults = produitDAO.searchProduct(search);
+        searchResults = produitDAO.searchProduct(search);
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Produit produit : searchResults) {
@@ -306,9 +291,9 @@ public class Main {
 
     public static void displayClient() {
         ArrayList<Client> clients = new ArrayList<>();
-        ClientDAO cdao = new ClientDAO();
+        ClientDAO clientDAO = new ClientDAO();
 
-        clients = cdao.getAll();
+        clients = clientDAO.getAll();
 
         System.out.print("------ Affichage des Clients ------\n");
         for (Client client : clients) {
@@ -320,14 +305,13 @@ public class Main {
     public static void addClient() {
         Client client = new Client();
         ClientDAO clientDAO = new ClientDAO();
-        int age = -1;
-
-        System.out.println("------ Ajout de Client ------");
-
         String lastname;
         String firstname;
         String city;
+        int age;
         boolean isInputValid = false;
+
+        System.out.println("------ Ajout de Client ------");
 
         while(!isInputValid){
             System.out.println("Veuillez entrer le nom du client : ");
@@ -387,81 +371,117 @@ public class Main {
                 System.out.println("Valeur invalide.");
             }
         }
-        
+
         clientDAO.save(client);
     }
 
     public static void modifyClient() {
-        ClientDAO cdao = new ClientDAO();
+        ClientDAO clientDAO = new ClientDAO();
+        Client client = new Client();
+        String lastname;
+        String firstname;
+        String city;
+        int age;
+        int userChoice;
+        boolean isInputValid = false;
+
         System.out.println("------ Modification de Client ------");
-        displayClient();
-
-        System.out.println("Veuillez entrer l'id du client a modifier : ");
-        int Userchoice = scanner.nextInt();
-        Client c = cdao.getById(Userchoice);
-
-        if (c != null) {
-            /* flash */
-            scanner.nextLine();
-
-            System.out.println("Veuillez entrer le nom : ");
-            String lastname = scanner.nextLine();
-            System.out.println("Veuillez entrer le prenom : ");
-            String firstname = scanner.nextLine();
-            System.out.println("Veuillez entrer la ville : ");
-            String city = scanner.nextLine();
-            System.out.println("Veuillez entrer l'age : ");
-            
-            int age = scanner.nextInt();
-
-            if(!c.setPrenom(firstname)) {
-                System.out.println("Ajout du client echoue car prenom vide ou trop long !");
-                return ;
+        
+        while(true){
+            displayClient();
+            System.out.println("Veuillez entrer l'id du client a modifier : ");
+            if(scanner.hasNextInt()){
+                userChoice = scanner.nextInt();
+                client = clientDAO.getById(userChoice);
+                if(client != null) {
+                    scanner.next();
+                    break;
+                }
+                System.out.println("Veuillez entrer un ID existant : ");
+                scanner.next();
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                scanner.next();
             }
-            if (c.setNom(lastname)) {
-                System.out.println("Ajout du client echoue car nom vide ou trop long !");
-                return ;
-            }
-            if (c.setVille(city)) {
-                System.out.println("Ajout du client echoue car nom vide ou trop long !");
-                return ;
-            }
-            c.setPrenom(firstname);
-            c.setNom(lastname);
-            c.setAge(age);
-            c.setVille(city);
-
-            cdao.save(c);
-        } else {
-            System.out.println("Erreur, ID invalide");
         }
+
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer le nom : ");
+            lastname  = scanner.nextLine();
+
+            if(client.setNom(lastname)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
+        isInputValid = false;
+
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer le prenom : ");
+            firstname  = scanner.nextLine();
+
+            if(client.setPrenom(firstname)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
+        isInputValid = false;
+
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer la ville : ");
+            city  = scanner.nextLine();
+
+            if(client.setVille(city)) {
+                isInputValid = true;
+            } else {
+                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
+       
+        while(true) {
+            System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
+            if (scanner.hasNextInt()) {
+                age = scanner.nextInt();
+                client.setAge(age);
+                scanner.next();
+                break;
+            } else {
+                System.out.println("Valeur invalide.");
+            }
+        }
+        clientDAO.save(client);
     }
 
     public static void deleteClient() {
-        ClientDAO cdao = new ClientDAO();
+        ClientDAO clientDAO = new ClientDAO();
         System.out.println("------ Suppresion de Client ------");
         displayClient();
 
         System.out.println("Veuillez entrer l'id du client a supprimer : ");
-        int userChoice = scanner.nextInt();
-
-        if (cdao.getById(userChoice) != null) {
-            cdao.deleteById(userChoice);
+        if(scanner.hasNextInt()){
+            int userChoice = scanner.nextInt();
+            if (clientDAO.getById(userChoice) != null) {
+                clientDAO.deleteById(userChoice);
+            } else {
+                System.out.println("Erreur ID inexistant");
+            }
         } else {
-            System.out.println("Erreur ID invalide");
+            System.out.println("Erreur veuillez entrer une valeur numerique");
         }
     }
 
     public static void searchClient() {
-        ClientDAO cdao =  new ClientDAO();
+        ClientDAO clientDAO =  new ClientDAO();
+        ArrayList<Client> searchResults = new ArrayList<>();
+        String search;
+
         System.out.println("------ Recherche de Client ------");
-        /*flash*/
-        scanner.nextLine();
-
         System.out.println("Veuillez entrer le terme de la recherche ");
-        String search = scanner.nextLine();
+        search = scanner.nextLine();
 
-        ArrayList<Client> searchResults = cdao.searchClients(search);
+        searchResults = clientDAO.searchClients(search);
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Client client : searchResults) {
@@ -474,9 +494,9 @@ public class Main {
 
     public static void displayCategorie() {
         ArrayList<Categorie> categories = new ArrayList<>();
-        CategorieDAO cdao = new CategorieDAO();
+        CategorieDAO clientDAO = new CategorieDAO();
 
-        categories = cdao.getAll();
+        categories = clientDAO.getAll();
 
         System.out.print("------ Affichage des Categories ------\n");
         for (Categorie categorie : categories) {
@@ -485,69 +505,96 @@ public class Main {
     }
 
     public static void addCategorie() {
-        Categorie c = new Categorie();
-        CategorieDAO cdao = new CategorieDAO();
+        CategorieDAO categorieDAO = new CategorieDAO();
+        Categorie categorie = new Categorie();
+        String title;
+        boolean isInputValid = false;
 
         System.out.println("------ Ajout de Categorie ------");
-        /*flash*/
-        scanner.nextLine();
+        displayCategorie();
 
-        System.out.println("Veuillez entrer le nom de la categorie: ");
-        String title = scanner.nextLine();
-
-        if (c.setTitre(title)) {
-            System.out.println("Saisie reussi");
-            cdao.save(c);
-        } else {
-            System.out.println("La titre n'a pas pu etre modifie car le nombre de character a depasse la limite de 50 ou bien vous y avez inserer un charactere vide.");
+        while(!isInputValid){
+            System.out.println("Veuillez entrer le nom de la categorie: ");
+            title = scanner.nextLine();
+            if (categorie.setTitre(title)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le nom de la categorie entré n'est pas valide. Veuillez réessayer.");
+            }
         }
+        categorieDAO.save(categorie);
     }
     
     public static void modifyCategorie() {
-        CategorieDAO cdao = new CategorieDAO();
+        CategorieDAO clientDAO = new CategorieDAO();
+        Categorie categorie = new Categorie();
+        String titre;
+        int userChoice;
+        boolean isInputValid = false;
+
         System.out.println("------ Modification de Categorie ------");
         displayCategorie();
 
-        System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
-        int Userchoice = scanner.nextInt();
-        Categorie c = cdao.getById(Userchoice);
-
-        if (c != null) {
-            /* flash */
-            scanner.nextLine();
-
-            System.out.println("Ancien nom : " + c.getTitre() + "\nVeuillez entrer le nouveau titre : ");
-            String titre = scanner.nextLine();
-
-            if(c.setTitre(titre)){
-                c.setTitre(titre);
-                cdao.save(c);
+        while(true) {
+            System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
+            if(scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                categorie = clientDAO.getById(userChoice);
+                    if(categorie != null) {
+                        scanner.next();
+                        break;
+                    } else {
+                        System.out.println("Entrée invalide.");
+                        scanner.next();
+                    }
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                scanner.next();
             }
-        } else {
-            System.out.println("Erreur, ID invalide");
         }
+
+        while(!isInputValid) {
+            System.out.println("Ancien nom : " + categorie.getTitre() + "\nVeuillez entrer le nouveau titre : ");
+            titre = scanner.nextLine();
+
+            if(categorie.setTitre(titre)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le titre de la categorie entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
+        clientDAO.save(categorie);
     }
 
     public static void deleteCategorie() {
-        CategorieDAO cdao = new CategorieDAO();
+        CategorieDAO categorieDAO = new CategorieDAO();
+        ProduitDAO produitDAO = new ProduitDAO();
+        int userChoice;
+
         System.out.println("------ Suppresion d'une Categorie ------");
         displayCategorie();
 
         System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
-        int userChoice = scanner.nextInt();
-
-        if (cdao.getById(userChoice) != null) {
-            cdao.deleteById(userChoice);
+        if(scanner.hasNextInt()) {
+            userChoice = scanner.nextInt();
+            if (categorieDAO.getById(userChoice) != null) {
+                if(produitDAO.getByIdCategorie(userChoice) != null) {
+                    produitDAO.deleteByIdCategorie(userChoice);
+                }
+                categorieDAO.deleteById(userChoice);
+            } else {
+                System.out.println("Erreur ID invalide");
+            }
         } else {
-            System.out.println("Erreur ID invalide");
+            System.out.println("Erreur veuillez entrer une valeur numerique");
         }
     }
 
     public static void displayOrder() {
         ArrayList<Commande> commandes = new ArrayList<>();
-        CommandeDAO cdao = new CommandeDAO();
+        CommandeDAO clientDAO = new CommandeDAO();
 
-        commandes = cdao.getAll();
+        commandes = clientDAO.getAll();
 
         System.out.print("------ Affichage des Commandes ------\n");
         for (Commande commande : commandes) {
@@ -556,47 +603,58 @@ public class Main {
     }
 
     public static void addOrder() {
+        CommandeDAO commandeDAO = new CommandeDAO();
+        ClientDAO clientDAO = new ClientDAO();
         Commande commande = new Commande();
-        CommandeDAO commandedao = new CommandeDAO();
-        ClientDAO clientdao = new ClientDAO();
+        int id_client;
 
         System.out.println("------ Ajout de Commande ------");
-
-        displayClient();
-        
-        do {
+        while(true) {
+            displayClient();
             System.out.println("Veuillez Choisir a quel client appartiendra la commande en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int id_client = scanner.nextInt();
-
-        Client client = clientdao.getById(id_client);
-
-        if (client == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+            if(scanner.hasNextInt()) {
+                id_client = scanner.nextInt();
+                if (clientDAO.getById(id_client) != null) {
+                    commande.setId_client(id_client);
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("Veuillez entrer un ID existant : ");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                 scanner.next();
-            } while (commande == null);
-            id_client = scanner.nextInt();
+            }
         }
-
-        commande.setId_client(id_client);
-
-        commandedao.save(commande);
+        commandeDAO.save(commande);
     }
 
     public static void deleteOrder() {
         CommandeDAO commandeDAO = new CommandeDAO();
+        DetailDAO detailDAO = new DetailDAO();
+        PaiementDAO paiementDAO = new PaiementDAO();
+        int userChoice;
+
         System.out.println("------ Suppresion d'une Commande ------");
         displayOrder();
 
         System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
-        int userChoice = scanner.nextInt();
-
-        if (commandeDAO.getById(userChoice) != null) {
-            commandeDAO.deleteById(userChoice);
+        if(scanner.hasNextInt()) {
+            userChoice = scanner.nextInt();
+            if (commandeDAO.getById(userChoice) != null) {
+                if (detailDAO.getByIdCommande(userChoice) != null) {
+                    detailDAO.deleteByIdCommande(userChoice);
+                }
+                if (paiementDAO.getByIdCommande(userChoice) != null) {
+                    paiementDAO.deleteByIdCommande(userChoice);
+                }
+                commandeDAO.deleteById(userChoice);
+            } else {
+                System.out.println("Veuillez entrer un ID existant : ");
+            }
         } else {
-            System.out.println("Erreur ID invalide");
+            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
         }
     }
 
@@ -614,29 +672,34 @@ public class Main {
     
     public static void addSupplier() {
         Fournisseur fournisseur = new Fournisseur();
-
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
+        boolean isInputValid = false;
+        String name;
+        String city;
 
         System.out.println("------ Ajout de Fournisseur ------");
-
         displaySupplier();
 
-        System.out.println("Veuillez entrer le nom du fournisseur : ");
-        String name = scanner.nextLine();
-        System.out.println("Veuillez entrer la ville du fournisseur : ");
-        String city = scanner.nextLine();
-
-        if (!fournisseur.setNom(name)) {
-            System.out.println("Le nom est trop long ou vide.");
-            return ;
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer le nom du fournisseur : ");
+            name = scanner.nextLine();
+            if(fournisseur.setNom(name)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+            }
         }
-        if (!fournisseur.setVille(city)){
-            System.out.println("Le nom de la ville est trop long ou vide.");
-            return ;
-        }
-        fournisseur.setNom(name);
-        fournisseur.setVille(city);
+        isInputValid = false;
 
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer la ville du fournisseur : ");
+            city = scanner.nextLine();
+            if(fournisseur.setVille(city)) {
+                isInputValid = true;
+            } else {
+                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
         fournisseurDAO.save(fournisseur);
     }
 
@@ -697,7 +760,7 @@ public class Main {
     }
 
     public static void searchSupplier() {
-        FournisseurDAO cdao =  new FournisseurDAO();
+        FournisseurDAO clientDAO =  new FournisseurDAO();
         System.out.println("------ Recherche de Fournisseur ------");
         /*flash*/
         scanner.nextLine();
@@ -705,7 +768,7 @@ public class Main {
         System.out.println("Veuillez entrer le terme de la recherche ");
         String search = scanner.nextLine();
 
-        ArrayList<Fournisseur> searchResults = cdao.searchSupplier(search);
+        ArrayList<Fournisseur> searchResults = clientDAO.searchSupplier(search);
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Fournisseur fournisseur : searchResults) {

@@ -101,5 +101,17 @@ public class PaiementDAO {
             System.out.println("ERROR");
         }
     }
+
+    public void deleteByIdCommande(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM paiement WHERE id_commande = ?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Paiement Deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR");
+        }
+    }
 }
 
