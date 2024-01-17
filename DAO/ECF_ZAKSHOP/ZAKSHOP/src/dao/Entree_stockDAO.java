@@ -73,6 +73,26 @@ public class Entree_stockDAO {
         }
     }
 
+    public Entree_stock getByIdSupplier(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM entree_stock WHERE id_fournisseur = ?");
+            ps.setInt(1, id);
+            ResultSet resultat = ps.executeQuery();
+            resultat.next();
+
+            Entree_stock u = new Entree_stock();
+            u.setId(resultat.getInt("id"));
+            u.setId_produit(resultat.getInt("id_produit"));
+            u.setId_fournisseur(resultat.getInt("id_fournisseur"));
+            u.setQuantite(resultat.getInt("quanttite"));
+            u.setDateE(resultat.getDate("dateE"));
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public ArrayList<Entree_stock> getAll() {
         ArrayList<Entree_stock> categories = new ArrayList<>();
         try {
@@ -109,6 +129,18 @@ public class Entree_stockDAO {
     public void deleteByIdProduct(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM entree_stock WHERE id_produit = ?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Entree_stock Deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR");
+        }
+    }
+
+    public void deleteByIdSupplier(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM entree_stock WHERE id_fournisseur = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             System.out.println("Entree_stock Deleted");

@@ -176,9 +176,9 @@ public class Main {
             System.out.println("Veuillez entrer l'id du produit à modifier, uniquement en valeur numérique : ");
             if (scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
-                scanner.nextLine();
                 produit = produitDAO.getById(userChoice);
                 if (produit != null) {
+                    scanner.next();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
@@ -480,8 +480,8 @@ public class Main {
         System.out.println("------ Recherche de Client ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
-
         searchResults = clientDAO.searchClients(search);
+        
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Client client : searchResults) {
@@ -705,70 +705,83 @@ public class Main {
 
     public static void modifySupplier() {
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
+        Fournisseur fournisseur = new Fournisseur();
+        int userChoice;
+        String name;
+        String city;
+        boolean isInputValid = false;
 
         System.out.println("------ Modification de Fournisseur ------");
         displaySupplier();
 
-        do {
+        while (true) {
             System.out.println("Veuillez entrer l'id du fournisseur a modifier en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int userChoice = scanner.nextInt();
-
-        Fournisseur fournisseur = fournisseurDAO.getById(userChoice);
-
-        if (fournisseur == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+            if(scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                fournisseur = fournisseurDAO.getById(userChoice);
                 scanner.next();
-            } while (fournisseur == null);
-            userChoice = scanner.nextInt();
+                break;
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                scanner.next();
+            }
         }
 
-        System.out.println("Veuillez entrer le titre : ");
-        String name = scanner.nextLine();
-        System.out.println("Veuillez entrer la ville");
-        String city = scanner.nextLine();
-
-        if (!fournisseur.setNom(name)) {
-            System.out.println("Le nom est trop long ou vide.");
-            return ;
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer le nom du fournisseur : ");
+            name = scanner.nextLine();
+            if(fournisseur.setNom(name)) {
+                isInputValid = true;
+            } else {
+                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+            }
         }
-        if (!fournisseur.setVille(city)){
-            System.out.println("Le nom de la ville est trop long ou vide.");
-            return ;
-        }
+        isInputValid = false;
 
-        fournisseur.setNom(name);
-        fournisseur.setVille(city);
+        while (!isInputValid) {
+            System.out.println("Veuillez entrer la ville du fournisseur : ");
+            city = scanner.nextLine();
+            if(fournisseur.setVille(city)) {
+                isInputValid = true;
+            } else {
+                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
         fournisseurDAO.save(fournisseur);
     }
 
     public static void deleteSupplier() {
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
+        Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        int userChoice;
+
         System.out.println("------ Suppresion d'un Fourniseur ------");
         displaySupplier();
 
         System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
-        int userChoice = scanner.nextInt();
-
-        if (fournisseurDAO.getById(userChoice) != null) {
-            fournisseurDAO.deleteById(userChoice);
-        } else {
-            System.out.println("Erreur ID invalide");
+        if (scanner.hasNextInt()) {
+            userChoice = scanner.nextInt();
+            if (fournisseurDAO.getById(userChoice) != null) {
+                if (entree_stockDAO.getByIdSupplier(userChoice) != null) {
+                    entree_stockDAO.deleteByIdSupplier(userChoice);
+                }
+                fournisseurDAO.deleteById(userChoice);
+            } else {
+                System.out.println("Erreur ID invalide");
+            }
         }
     }
 
     public static void searchSupplier() {
+        ArrayList<Fournisseur> searchResults = new ArrayList<>();
         FournisseurDAO clientDAO =  new FournisseurDAO();
+        String search;
+
         System.out.println("------ Recherche de Fournisseur ------");
-        /*flash*/
-        scanner.nextLine();
-
         System.out.println("Veuillez entrer le terme de la recherche ");
-        String search = scanner.nextLine();
+        search = scanner.nextLine();
+        searchResults = clientDAO.searchSupplier(search);
 
-        ArrayList<Fournisseur> searchResults = clientDAO.searchSupplier(search);
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Fournisseur fournisseur : searchResults) {
@@ -792,76 +805,82 @@ public class Main {
     }
 
     public static void addStock() {
-        Entree_stock entree_stock = new Entree_stock();
-
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
         ProduitDAO produitDAO = new ProduitDAO();
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
+        Entree_stock entree_stock = new Entree_stock();
+        int id_fournisseur;
+        int id_produit;
+        int quantite;
 
         System.out.println("------ Ajout d'une Entree Stock ------");
 
         displayStock();
         displayProduct();
-        do {
+        while (true) {
             System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int id_produit = scanner.nextInt();
-
-        Produit produit = produitDAO.getById(id_produit);
-
-        if (produit == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+            if (scanner.hasNextInt()) {
+                id_produit = scanner.nextInt();
+                if(produitDAO.getById(id_produit) != null){
+                    entree_stock.setId_produit(id_produit);
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("Entrée invalide.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                 scanner.next();
-            } while (produit == null);
-            id_produit = scanner.nextInt();
+            }
         }
 
-        displaySupplier();
-        do {
-            System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int id_fournisseur = scanner.nextInt();
-
-        Fournisseur fournisseur = fournisseurDAO.getById(id_fournisseur);
-
-        if (fournisseur == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+        while (true) {
+            System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");          
+            if (scanner.hasNextInt()) {
+                id_fournisseur = scanner.nextInt();
+                if(fournisseurDAO.getById(id_fournisseur) != null){
+                    entree_stock.setId_fournisseur(id_fournisseur);
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("Entrée invalide.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                 scanner.next();
-            } while (fournisseur == null);
-            id_fournisseur = scanner.nextInt();
+            }
         }
 
-        System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");   
-        do {
-            System.out.println("Veuillez entrer la quantite de produit uniquement en valeur numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int quantite = scanner.nextInt();
-
-        entree_stock.setId_produit(id_produit);
-        entree_stock.setId_fournisseur(id_fournisseur);
-        entree_stock.setQuantite(quantite);
-
+        while (true) {
+            System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
+                if (scanner.hasNextInt()) {
+                quantite = scanner.nextInt();
+                entree_stock.setQuantite(quantite);
+                scanner.next();
+                break;
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                scanner.next();
+            }
+        }
         entree_stockDAO.save(entree_stock);
     }
 
     public static void deleteStock() {
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        int userChoice;
+
         System.out.println("------ Suppresion d'un Fourniseur ------");
         displayStock();
 
-        do {
-            System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int userChoice = scanner.nextInt();
-
-        if (entree_stockDAO.getById(userChoice) != null) {
-            entree_stockDAO.deleteById(userChoice);
+        System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
+        if (scanner.hasNextInt()) {
+            userChoice = scanner.nextInt();
+            if (entree_stockDAO.getById(userChoice) != null) {
+                entree_stockDAO.deleteById(userChoice);
+            }
         } else {
             System.out.println("Erreur ID invalide");
         }
@@ -880,82 +899,117 @@ public class Main {
     }
 
     public static void addPaiement() {
-        Paiement paiement = new Paiement();
-
         PaiementDAO paiementDAO = new PaiementDAO();
+        CommandeDAO commandeDAO = new CommandeDAO();
+        Paiement paiement = new Paiement();
+        int id_commande;
+        Double price;
 
         System.out.println("------ Paiement ------");
-
-        displayPaiement();
         displayOrder();
-        do {
-            System.out.println("Veuillez Choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int id_commande = scanner.nextInt();
 
-        
-        paiement = paiementDAO.getByIdCommande(id_commande);
-
-        if (paiement == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+        while (true) {
+            System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            if (scanner.hasNextInt()){
+                id_commande = scanner.nextInt();
+                if(commandeDAO.getById(id_commande) != null) {
+                    paiement.setId_commande(id_commande);
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
                 scanner.next();
-            } while (paiement == null);
-            id_commande = scanner.nextInt();
+            }
         }
         
-        do {
+        while(true) {
             System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextDouble());
-        Double price = scanner.nextDouble();
-
-        paiement.setMontant(price);
-
+            if (scanner.hasNextDouble()) {
+                price = scanner.nextDouble();
+                paiement.setMontant(price);
+                scanner.next();
+                break;
+            } else {
+                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
         paiementDAO.save(paiement);
     }
 
-    /*A revoir ENTIEREMENT PROBLEME DE CONCEPTION DANS LA MANIERE DE GERER LES CONTROLES DE SAISI */
     public static void modifyPaiement() {
         PaiementDAO paiementDAO = new PaiementDAO();
+        CommandeDAO commandeDAO = new CommandeDAO();
+        Paiement paiement = new Paiement();
+        int id_commande;
+        int userChoice;
+        Double price;
 
         System.out.println("------ Modification de Paiement ------");
-        displayPaiement();
-
-        do {
+        
+        while (true) {
+            displayPaiement();
             System.out.println("Veuillez entrer l'id du paiement a modifier en utilisant uniquement des caracteres numerique : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int userChoice = scanner.nextInt();
-
-        Paiement paiement = paiementDAO.getById(userChoice);
-
-        if (paiement == null) {
-            do {
-                System.out.println("Veuillez entrer un ID existant : ");
+            if (scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                paiement = paiementDAO.getById(userChoice);
+                if (paiement != null) {
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
                 scanner.next();
-            } while (paiement == null);
-            userChoice = scanner.nextInt();
+            }
         }
-        paiement = paiementDAO.getById(userChoice);
 
-        do {
-            System.out.println("Veuillez entrer un prix en chiffre uniquement : ");
-            scanner.next();
-        } while (!scanner.hasNextInt());
-        int price = scanner.nextInt();
 
-        paiement.setMontant(price);
+        while (true) {
+            System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+            if (scanner.hasNextInt()){
+                id_commande = scanner.nextInt();
+                if(commandeDAO.getById(id_commande) != null) {
+                    paiement.setId_commande(id_commande);
+                    scanner.next();
+                    break;
+                } else {
+                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                scanner.next();
+            }
+        }
+        
+        while(true) {
+            System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
+            if (scanner.hasNextDouble()) {
+                price = scanner.nextDouble();
+                paiement.setMontant(price);
+                scanner.next();
+                break;
+            } else {
+                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+            }
+        }
+        paiementDAO.save(paiement);
     }
 
     public static void deletePaiement() {
         PaiementDAO paiementDAO = new PaiementDAO();
+        int userChoice;
+
         System.out.println("------ Suppresion d'un Paiement ------");
         displayProduct();
-
         System.out.println("Veuillez entrer l'id du paiement a supprimer : ");
-        int userChoice = scanner.nextInt();
+        userChoice = scanner.nextInt();
 
         if (paiementDAO.getById(userChoice) != null) {
             paiementDAO.deleteById(userChoice);
