@@ -99,10 +99,6 @@ public class Main {
         int id_categorie;
         int stock;
         
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout de Produit ------");
         displayCategorie();
         while(true) {
@@ -172,10 +168,6 @@ public class Main {
         int id_categorie;
         int stock;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Modification de Produit ------");
         while(true) {
             displayProduct();
@@ -197,8 +189,8 @@ public class Main {
 
         while(true) {
             displayCategorie();
+            System.out.println("Veuillez choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()) {
-                System.out.println("Veuillez choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
                 id_categorie = scanner.nextInt();
                 scanner.nextLine();
                 if (categorieDAO.getById(id_categorie) != null) {
@@ -259,15 +251,11 @@ public class Main {
         DetailDAO detailDAO = new DetailDAO();
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Suppresion d'un Produit ------");
         displayProduct();
         System.out.println("Veuillez entrer l'id du produit a supprimer en utilisant uniquement des chiffres : ");
         userChoice = scanner.nextInt();
-    
+        scanner.nextLine();
         if (produitDAO.getById(userChoice) != null) {
             produitDAO.deleteById(userChoice);
             if (detailDAO.getByIdProduct(userChoice) != null) {
@@ -286,10 +274,6 @@ public class Main {
         ProduitDAO produitDAO =  new ProduitDAO();
         String search;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Recherche d'un Produit ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
@@ -326,10 +310,6 @@ public class Main {
         String city;
         int age;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout de Client ------");
         while(!isInputValid){
             System.out.println("Veuillez entrer le nom du client : ");
@@ -382,8 +362,8 @@ public class Main {
             System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
-                client.setAge(age);
                 scanner.nextLine();
+                client.setAge(age);
                 break;
             } else {
                 System.out.println("Valeur invalide.");
@@ -403,16 +383,13 @@ public class Main {
         int age;
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Modification de Client ------");
         while(true){
             displayClient();
             System.out.println("Veuillez entrer l'id du client a modifier : ");
             if(scanner.hasNextInt()){
                 userChoice = scanner.nextInt();
+                scanner.nextLine();
                 client = clientDAO.getById(userChoice);
                 if(client != null) {
                     scanner.nextLine();
@@ -465,8 +442,8 @@ public class Main {
             System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
-                client.setAge(age);
                 scanner.nextLine();
+                client.setAge(age);
                 break;
             } else {
                 System.out.println("Valeur invalide.");
@@ -479,15 +456,12 @@ public class Main {
         ClientDAO clientDAO = new ClientDAO();
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Suppresion de Client ------");
         displayClient();
         System.out.println("Veuillez entrer l'id du client a supprimer : ");
         if(scanner.hasNextInt()){
             userChoice = scanner.nextInt();
+            scanner.nextLine();
             if (clientDAO.getById(userChoice) != null) {
                 clientDAO.deleteById(userChoice);
             } else {
@@ -503,10 +477,6 @@ public class Main {
         ArrayList<Client> searchResults = new ArrayList<>();
         String search;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Recherche de Client ------");
         System.out.println("Veuillez entrer le terme de la recherche ");        
         search = scanner.nextLine();
@@ -540,10 +510,6 @@ public class Main {
         String title;
         boolean isInputValid = false;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout de Categorie ------");
         while(!isInputValid){
             displayCategorie();
@@ -565,27 +531,22 @@ public class Main {
         String titre;
         int userChoice;
      
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Modification de Categorie ------");
         while(true) {
             displayCategorie();
             System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
             if(scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
+                scanner.nextLine();
                 categorie = clientDAO.getById(userChoice);
                     if(categorie != null) {
-                        scanner.nextLine();
                         break;
                     } else {
                         System.out.println("Entrée invalide.");
-                        scanner.nextLine();
                     }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
 
@@ -607,15 +568,12 @@ public class Main {
         ProduitDAO produitDAO = new ProduitDAO();
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Suppresion d'une Categorie ------");
         displayCategorie();
         System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
         if(scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
+            scanner.nextLine();
             if (categorieDAO.getById(userChoice) != null) {
                 if(produitDAO.getByIdCategorie(userChoice) != null) {
                     produitDAO.deleteByIdCategorie(userChoice);
@@ -626,6 +584,7 @@ public class Main {
             }
         } else {
             System.out.println("Erreur veuillez entrer une valeur numerique");
+            scanner.next();
         }
     }
 
@@ -647,27 +606,22 @@ public class Main {
         Commande commande = new Commande();
         int id_client;
         
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout de Commande ------");
         while(true) {
             displayClient();
             System.out.println("Veuillez Choisir a quel client appartiendra la commande en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if(scanner.hasNextInt()) {
                 id_client = scanner.nextInt();
+                scanner.nextLine();
                 if (clientDAO.getById(id_client) != null) {
                     commande.setId_client(id_client);
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Veuillez entrer un ID existant : ");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
         commandeDAO.save(commande);
@@ -679,15 +633,12 @@ public class Main {
         DetailDAO detailDAO = new DetailDAO();
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Suppresion d'une Commande ------");   
         displayOrder();
         System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
         if(scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
+            scanner.nextLine();
             if (commandeDAO.getById(userChoice) != null) {
                 if (detailDAO.getByIdCommande(userChoice) != null) {
                     detailDAO.deleteByIdCommande(userChoice);
@@ -701,6 +652,7 @@ public class Main {
             }
         } else {
             System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+            scanner.next();
         }
     }
 
@@ -723,10 +675,6 @@ public class Main {
         String name;
         String city;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout de Fournisseur ------");
         while (!isInputValid) {
             displaySupplier();
@@ -760,10 +708,6 @@ public class Main {
         String city;
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Modification de Fournisseur ------");
 
         while (true) {
@@ -771,12 +715,12 @@ public class Main {
             System.out.println("Veuillez entrer l'id du fournisseur a modifier en utilisant uniquement des caracteres numerique : ");
             if(scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
-                fournisseur = fournisseurDAO.getById(userChoice);
                 scanner.nextLine();
+                fournisseur = fournisseurDAO.getById(userChoice);
                 break;
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
 
@@ -808,15 +752,12 @@ public class Main {
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
         int userChoice;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Suppresion d'un Fourniseur ------");
         displaySupplier();
         System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
         if (scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
+            scanner.nextLine();
             if (fournisseurDAO.getById(userChoice) != null) {
                 if (entree_stockDAO.getByIdSupplier(userChoice) != null) {
                     entree_stockDAO.deleteByIdSupplier(userChoice);
@@ -833,10 +774,6 @@ public class Main {
         FournisseurDAO clientDAO =  new FournisseurDAO();
         String search;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Recherche de Fournisseur ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
@@ -873,10 +810,6 @@ public class Main {
         int id_produit;
         int quantite;
 
-        /* Nettoyage du Scanner */
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.println("------ Ajout d'une Entree Stock ------");
         displayStock();
         while (true) {
@@ -884,17 +817,16 @@ public class Main {
             System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()) {
                 id_produit = scanner.nextInt();
+                scanner.nextLine();
                 if(produitDAO.getById(id_produit) != null){
                     entree_stock.setId_produit(id_produit);
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Entrée invalide.");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
 
@@ -902,30 +834,29 @@ public class Main {
             System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");          
             if (scanner.hasNextInt()) {
                 id_fournisseur = scanner.nextInt();
+                scanner.nextLine();
                 if(fournisseurDAO.getById(id_fournisseur) != null){
                     entree_stock.setId_fournisseur(id_fournisseur);
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Entrée invalide.");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
 
         while (true) {
             System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
-                if (scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
                 quantite = scanner.nextInt();
                 entree_stock.setQuantite(quantite);
                 scanner.nextLine();
                 break;
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
         entree_stockDAO.save(entree_stock);
@@ -941,11 +872,13 @@ public class Main {
         System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
         if (scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
+            scanner.nextLine();
             if (entree_stockDAO.getById(userChoice) != null) {
                 entree_stockDAO.deleteById(userChoice);
             }
         } else {
             System.out.println("Erreur ID invalide");
+            scanner.next();
         }
     }
     
@@ -975,17 +908,16 @@ public class Main {
             System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()){
                 id_commande = scanner.nextInt();
+                scanner.nextLine();
                 if(commandeDAO.getById(id_commande) != null) {
                     paiement.setId_commande(id_commande);
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
         
@@ -1018,17 +950,16 @@ public class Main {
             System.out.println("Veuillez entrer l'id du paiement a modifier en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
+                scanner.nextLine();
                 paiement = paiementDAO.getById(userChoice);
                 if (paiement != null) {
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
 
@@ -1037,17 +968,16 @@ public class Main {
             System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()){
                 id_commande = scanner.nextInt();
+                scanner.nextLine();
                 if(commandeDAO.getById(id_commande) != null) {
                     paiement.setId_commande(id_commande);
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.nextLine();
+                scanner.next();
             }
         }
         
@@ -1072,47 +1002,59 @@ public class Main {
         System.out.println("------ Suppresion d'un Paiement ------");
         displayProduct();
         System.out.println("Veuillez entrer l'id du paiement a supprimer : ");
-        userChoice = scanner.nextInt();
-
-        if (paiementDAO.getById(userChoice) != null) {
-            paiementDAO.deleteById(userChoice);
+        if(scanner.hasNextInt()){
+            userChoice = scanner.nextInt();
+            scanner.nextLine();
+            if (paiementDAO.getById(userChoice) != null) {
+                paiementDAO.deleteById(userChoice);
+            }
         } else {
             System.out.println("Erreur ID invalide");
+            scanner.next();
         }
     }
 
     public static int menu() {
-        System.out.println("\n------ Menu de Gestion ------");
-        System.out.println("1- Liste des Produits");
-        System.out.println("2- Ajouter un Produit");
-        System.out.println("3- Modifier un Produit");
-        System.out.println("4- Supprimer un Produit");
-        System.out.println("5- Rechercher un Produit");
-        System.out.println("6- Liste des Clients");
-        System.out.println("7- Ajouter un Client");
-        System.out.println("8- Modifier un Client");
-        System.out.println("9- Supprimer un Client");
-        System.out.println("10- Rechercher un Client");
-        System.out.println("11- Liste des Catégories");
-        System.out.println("12- Ajouter une Catégorie");
-        System.out.println("13- Modifier une Catégorie");
-        System.out.println("14- Supprimer une Catégorie");
-        System.out.println("15- Liste des Commandes");
-        System.out.println("16- Passer une Commande");
-        System.out.println("17- Supprimer une Commande");
-        System.out.println("18- Liste des Fournisseurs");
-        System.out.println("19- Ajouter un Fournisseur");
-        System.out.println("20- Modifier un Fournisseur");
-        System.out.println("21- Supprimer un Fournisseur");
-        System.out.println("22- Rechercher un Fournisseur");
-        System.out.println("23- Liste des entrées en Stock");
-        System.out.println("24- Ajouter une entrée en Stock");
-        System.out.println("25- Supprimer une entrée en Stock");
-        System.out.println("26- Liste des Paiements");
-        System.out.println("27- Effectuer un Paiement");
-        System.out.println("28- Modifier un Paiement");
-        System.out.println("29- Supprimer un Paiement");
-        System.out.println("0- Quitter");
+        int userChoice;
+        do {
+            System.out.println("\n------ Menu de Gestion ------");
+            System.out.println("1- Liste des Produits");
+            System.out.println("2- Ajouter un Produit");
+            System.out.println("3- Modifier un Produit");
+            System.out.println("4- Supprimer un Produit");
+            System.out.println("5- Rechercher un Produit");
+            System.out.println("6- Liste des Clients");
+            System.out.println("7- Ajouter un Client");
+            System.out.println("8- Modifier un Client");
+            System.out.println("9- Supprimer un Client");
+            System.out.println("10- Rechercher un Client");
+            System.out.println("11- Liste des Catégories");
+            System.out.println("12- Ajouter une Catégorie");
+            System.out.println("13- Modifier une Catégorie");
+            System.out.println("14- Supprimer une Catégorie");
+            System.out.println("15- Liste des Commandes");
+            System.out.println("16- Passer une Commande");
+            System.out.println("17- Supprimer une Commande");
+            System.out.println("18- Liste des Fournisseurs");
+            System.out.println("19- Ajouter un Fournisseur");
+            System.out.println("20- Modifier un Fournisseur");
+            System.out.println("21- Supprimer un Fournisseur");
+            System.out.println("22- Rechercher un Fournisseur");
+            System.out.println("23- Liste des entrées en Stock");
+            System.out.println("24- Ajouter une entrée en Stock");
+            System.out.println("25- Supprimer une entrée en Stock");
+            System.out.println("26- Liste des Paiements");
+            System.out.println("27- Effectuer un Paiement");
+            System.out.println("28- Modifier un Paiement");
+            System.out.println("29- Supprimer un Paiement");
+            System.out.println("0- Quitter");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Veuillez entrer un nombre valide.");
+                scanner.next();
+            }
+            userChoice = scanner.nextInt();
+            scanner.nextLine();
+        } while (userChoice < 0 || userChoice > 29);
         return scanner.nextInt();
     }
 }
