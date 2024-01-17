@@ -108,14 +108,14 @@ public class Main {
                 id_categorie = scanner.nextInt();
                 if(categorieDAO.getById(id_categorie) != null) {
                     produit.setId_categorie(id_categorie);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 }
                 System.out.println("Veuillez entrer un ID existant : ");
-                scanner.next();
+                scanner.nextLine();
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -135,7 +135,7 @@ public class Main {
             if (scanner.hasNextDouble()){
                 price = scanner.nextDouble();
                 produit.setPrix(price);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
@@ -148,7 +148,7 @@ public class Main {
             if (scanner.hasNextInt()){
                 stock = scanner.nextInt();
                 produit.setStock(stock);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.");
@@ -178,15 +178,15 @@ public class Main {
                 userChoice = scanner.nextInt();
                 produit = produitDAO.getById(userChoice);
                 if (produit != null) {
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -222,7 +222,7 @@ public class Main {
             if (scanner.hasNextDouble()){
                 price = scanner.nextDouble();
                 produit.setPrix(price);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
@@ -234,7 +234,7 @@ public class Main {
             if (scanner.hasNextInt()){
                 stock = scanner.nextInt();
                 produit.setStock(stock);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("La somme entré n'est pas valide. Veuillez réessayer.");
@@ -365,7 +365,7 @@ public class Main {
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
                 client.setAge(age);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Valeur invalide.");
@@ -394,14 +394,14 @@ public class Main {
                 userChoice = scanner.nextInt();
                 client = clientDAO.getById(userChoice);
                 if(client != null) {
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 }
                 System.out.println("Veuillez entrer un ID existant : ");
-                scanner.next();
+                scanner.nextLine();
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -445,7 +445,7 @@ public class Main {
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
                 client.setAge(age);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Valeur invalide.");
@@ -541,15 +541,15 @@ public class Main {
                 userChoice = scanner.nextInt();
                 categorie = clientDAO.getById(userChoice);
                     if(categorie != null) {
-                        scanner.next();
+                        scanner.nextLine();
                         break;
                     } else {
                         System.out.println("Entrée invalide.");
-                        scanner.next();
+                        scanner.nextLine();
                     }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -616,15 +616,15 @@ public class Main {
                 id_client = scanner.nextInt();
                 if (clientDAO.getById(id_client) != null) {
                     commande.setId_client(id_client);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Veuillez entrer un ID existant : ");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
         commandeDAO.save(commande);
@@ -719,11 +719,11 @@ public class Main {
             if(scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
                 fournisseur = fournisseurDAO.getById(userChoice);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -823,15 +823,15 @@ public class Main {
                 id_produit = scanner.nextInt();
                 if(produitDAO.getById(id_produit) != null){
                     entree_stock.setId_produit(id_produit);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Entrée invalide.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -841,15 +841,15 @@ public class Main {
                 id_fournisseur = scanner.nextInt();
                 if(fournisseurDAO.getById(id_fournisseur) != null){
                     entree_stock.setId_fournisseur(id_fournisseur);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("Entrée invalide.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -858,11 +858,11 @@ public class Main {
                 if (scanner.hasNextInt()) {
                 quantite = scanner.nextInt();
                 entree_stock.setQuantite(quantite);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
         entree_stockDAO.save(entree_stock);
@@ -914,15 +914,15 @@ public class Main {
                 id_commande = scanner.nextInt();
                 if(commandeDAO.getById(id_commande) != null) {
                     paiement.setId_commande(id_commande);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
         
@@ -931,7 +931,7 @@ public class Main {
             if (scanner.hasNextDouble()) {
                 price = scanner.nextDouble();
                 paiement.setMontant(price);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
@@ -957,15 +957,15 @@ public class Main {
                 userChoice = scanner.nextInt();
                 paiement = paiementDAO.getById(userChoice);
                 if (paiement != null) {
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -976,15 +976,15 @@ public class Main {
                 id_commande = scanner.nextInt();
                 if(commandeDAO.getById(id_commande) != null) {
                     paiement.setId_commande(id_commande);
-                    scanner.next();
+                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             } else {
                 System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
+                scanner.nextLine();
             }
         }
         
@@ -993,7 +993,7 @@ public class Main {
             if (scanner.hasNextDouble()) {
                 price = scanner.nextDouble();
                 paiement.setMontant(price);
-                scanner.next();
+                scanner.nextLine();
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
