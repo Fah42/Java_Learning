@@ -99,9 +99,12 @@ public class Main {
         int id_categorie;
         int stock;
         
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout de Produit ------");
         displayCategorie();
-
         while(true) {
             System.out.println("Veuillez choisir à quelle catégorie appartiendra le produit en sélectionnant l'id correspondant, en utilisant uniquement des caractères numériques : ");
             if (scanner.hasNextInt()) {
@@ -169,8 +172,11 @@ public class Main {
         int id_categorie;
         int stock;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Modification de Produit ------");
-
         while(true) {
             displayProduct();
             System.out.println("Veuillez entrer l'id du produit à modifier, uniquement en valeur numérique : ");
@@ -248,11 +254,15 @@ public class Main {
     }
 
     public static void deleteProduct() {
-        ProduitDAO produitDAO = new ProduitDAO();
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        ProduitDAO produitDAO = new ProduitDAO();
         DetailDAO detailDAO = new DetailDAO();
         int userChoice;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Suppresion d'un Produit ------");
         displayProduct();
         System.out.println("Veuillez entrer l'id du produit a supprimer en utilisant uniquement des chiffres : ");
@@ -276,10 +286,13 @@ public class Main {
         ProduitDAO produitDAO =  new ProduitDAO();
         String search;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Recherche d'un Produit ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
-
         searchResults = produitDAO.searchProduct(search);
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
@@ -313,8 +326,11 @@ public class Main {
         String city;
         int age;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout de Client ------");
-
         while(!isInputValid){
             System.out.println("Veuillez entrer le nom du client : ");
             lastname = scanner.nextLine();
@@ -387,8 +403,11 @@ public class Main {
         int age;
         int userChoice;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Modification de Client ------");
-        
         while(true){
             displayClient();
             System.out.println("Veuillez entrer l'id du client a modifier : ");
@@ -458,12 +477,17 @@ public class Main {
 
     public static void deleteClient() {
         ClientDAO clientDAO = new ClientDAO();
+        int userChoice;
+
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Suppresion de Client ------");
         displayClient();
-
         System.out.println("Veuillez entrer l'id du client a supprimer : ");
         if(scanner.hasNextInt()){
-            int userChoice = scanner.nextInt();
+            userChoice = scanner.nextInt();
             if (clientDAO.getById(userChoice) != null) {
                 clientDAO.deleteById(userChoice);
             } else {
@@ -479,8 +503,12 @@ public class Main {
         ArrayList<Client> searchResults = new ArrayList<>();
         String search;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Recherche de Client ------");
-        System.out.println("Veuillez entrer le terme de la recherche ");
+        System.out.println("Veuillez entrer le terme de la recherche ");        
         search = scanner.nextLine();
         searchResults = clientDAO.searchClients(search);
         
@@ -512,10 +540,13 @@ public class Main {
         String title;
         boolean isInputValid = false;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout de Categorie ------");
-        displayCategorie();
-
         while(!isInputValid){
+            displayCategorie();
             System.out.println("Veuillez entrer le nom de la categorie: ");
             title = scanner.nextLine();
             if (categorie.setTitre(title)) {
@@ -533,11 +564,14 @@ public class Main {
         boolean isInputValid = false;
         String titre;
         int userChoice;
-
+     
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Modification de Categorie ------");
-        displayCategorie();
-
         while(true) {
+            displayCategorie();
             System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
             if(scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
@@ -573,9 +607,12 @@ public class Main {
         ProduitDAO produitDAO = new ProduitDAO();
         int userChoice;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Suppresion d'une Categorie ------");
         displayCategorie();
-
         System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
         if(scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
@@ -609,7 +646,11 @@ public class Main {
         ClientDAO clientDAO = new ClientDAO();
         Commande commande = new Commande();
         int id_client;
-
+        
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout de Commande ------");
         while(true) {
             displayClient();
@@ -638,9 +679,12 @@ public class Main {
         DetailDAO detailDAO = new DetailDAO();
         int userChoice;
 
-        System.out.println("------ Suppresion d'une Commande ------");
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
+        System.out.println("------ Suppresion d'une Commande ------");   
         displayOrder();
-
         System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
         if(scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
@@ -679,10 +723,13 @@ public class Main {
         String name;
         String city;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout de Fournisseur ------");
-        displaySupplier();
-
         while (!isInputValid) {
+            displaySupplier();
             System.out.println("Veuillez entrer le nom du fournisseur : ");
             name = scanner.nextLine();
             if(fournisseur.setNom(name)) {
@@ -713,10 +760,14 @@ public class Main {
         String city;
         int userChoice;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Modification de Fournisseur ------");
-        displaySupplier();
 
         while (true) {
+            displaySupplier();
             System.out.println("Veuillez entrer l'id du fournisseur a modifier en utilisant uniquement des caracteres numerique : ");
             if(scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
@@ -757,9 +808,12 @@ public class Main {
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
         int userChoice;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Suppresion d'un Fourniseur ------");
         displaySupplier();
-
         System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
         if (scanner.hasNextInt()) {
             userChoice = scanner.nextInt();
@@ -779,6 +833,10 @@ public class Main {
         FournisseurDAO clientDAO =  new FournisseurDAO();
         String search;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Recherche de Fournisseur ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
@@ -815,11 +873,14 @@ public class Main {
         int id_produit;
         int quantite;
 
+        /* Nettoyage du Scanner */
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.println("------ Ajout d'une Entree Stock ------");
-
         displayStock();
-        displayProduct();
         while (true) {
+            displayProduct();
             System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
             if (scanner.hasNextInt()) {
                 id_produit = scanner.nextInt();
