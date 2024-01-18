@@ -64,31 +64,6 @@ public class Detail {
     public void setId_produit(int id_produit) {
         this.id_produit = id_produit;
     }
-
-    public Detail id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Detail quantite(int quantite) {
-        setQuantite(quantite);
-        return this;
-    }
-
-    public Detail prixU(double prixU) {
-        setPrixU(prixU);
-        return this;
-    }
-
-    public Detail id_commande(int id_commande) {
-        setId_commande(id_commande);
-        return this;
-    }
-
-    public Detail id_produit(int id_produit) {
-        setId_produit(id_produit);
-        return this;
-    }
     
     @Override
     public String toString() {

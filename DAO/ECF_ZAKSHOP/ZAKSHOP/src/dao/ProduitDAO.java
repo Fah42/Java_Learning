@@ -19,7 +19,6 @@ public class ProduitDAO {
                 ps.setInt(4, produit.getStock());
                 ps.setInt(5, produit.getId());
                 ps.executeUpdate();
-                System.out.println("Update Ok !");
             } else {
                 PreparedStatement ps = Database.connexion.prepareStatement("INSERT INTO produit (titre, prix, id_categorie, stock) VALUES (?,?,?,?)");
                 ps.setString(1, produit.getTitre());
@@ -27,7 +26,6 @@ public class ProduitDAO {
                 ps.setInt(3, produit.getId_categorie());
                 ps.setInt(4, produit.getStock());
                 ps.executeUpdate();
-                System.out.println("Insert Ok !");
             }
         } catch (Exception e) {
             return;
@@ -97,7 +95,6 @@ public class ProduitDAO {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM produit WHERE id = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
-            System.out.println("Produit Efface");
         } catch (Exception e) {
             return;
         }
@@ -108,13 +105,12 @@ public class ProduitDAO {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM produit WHERE id_categorie = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
-            System.out.println("Produit Efface");
         } catch (Exception e) {
             return;
         }
     }
 
-    public ArrayList<Produit> searchProduct(String searchTerm) {
+    public ArrayList<Produit> searchProducts(String searchTerm) {
         ArrayList<Produit> produits = new ArrayList<>();
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM produit WHERE titre LIKE ? OR prix LIKE ? OR stock LIKE ?");

@@ -45,27 +45,8 @@ public class Commande {
         this.id_client = id_client;
     }
 
-    public Commande id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Commande dateF(Date dateF) {
-        setDateF(dateF);
-        return this;
-    }
-
-    public Commande id_client(int id_client) {
-        setId_client(id_client);
-        return this;
-    }
-
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", dateF='" + getDateF() + "'" +
-            ", id_client='" + getId_client() + "'" +
-            "}";
+        return getId() + " - [date :" + getDateF() + "] - [id_client :" + getId_client() + "]";
     }
 }

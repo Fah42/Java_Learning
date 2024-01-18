@@ -7,21 +7,24 @@ public class Paiement {
     private int id_commande;
     private double montant;
     private Date dateP;
+    private Commande commande;
 
     public Paiement() {
     }
 
-    public Paiement(int id_commande, double montant, Date dateP) {
+    public Paiement(Commande commande, int id_commande, double montant, Date dateP) {
         this.id_commande = id_commande;
         this.montant = montant;
         this.dateP = dateP;
+        this.commande = commande;
     }
 
-    public Paiement(int id, int id_commande, double montant, Date dateP) {
+    public Paiement(Commande commande, int id, int id_commande, double montant, Date dateP) {
         this.id = id;
         this.id_commande = id_commande;
         this.montant = montant;
         this.dateP = dateP;
+        this.commande = commande;
     }
 
     public int getId() {
@@ -56,35 +59,16 @@ public class Paiement {
         this.dateP = dateP;
     }
 
-    public Paiement id(int id) {
-        setId(id);
-        return this;
+    public Commande getCommande(Commande commande) {
+        return this.commande;
     }
 
-    public Paiement id_commande(int id_commande) {
-        setId_commande(id_commande);
-        return this;
-    }
-
-    public Paiement montant(double montant) {
-        setMontant(montant);
-        return this;
-    }
-
-    public Paiement dateP(Date dateP) {
-        setDateP(dateP);
-        return this;
+    public void setCommande(Commande commande) {
+        this.commande = commande;
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", id_commande='" + getId_commande() + "'" +
-            ", montant='" + getMontant() + "'" +
-            ", dateP='" + getDateP() + "'" +
-            "}";
+        return getId() + " - [Facture n : " + commande.getId() + "] - [Montant : " + getMontant() + "] - [Date : " + getDateP() + "]";
     }
-
-    
 }

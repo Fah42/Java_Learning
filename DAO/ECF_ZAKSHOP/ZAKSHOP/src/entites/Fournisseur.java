@@ -33,7 +33,7 @@ public class Fournisseur {
     }
 
     public boolean setNom(String nom) {
-        if (nom.length() > 50 || nom.length() <= 0 ||nom == null) {
+        if (nom.length() > 5 || nom.length() <= 0 ||nom == null) {
             return false;
         } else {
             this.nom = nom;

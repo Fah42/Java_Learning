@@ -39,10 +39,7 @@ public class Categorie {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", titre='" + getTitre() + "'" +
-            "}";
+        return getId() + " - [titre : " + getTitre() + "]";
     }
     
 }

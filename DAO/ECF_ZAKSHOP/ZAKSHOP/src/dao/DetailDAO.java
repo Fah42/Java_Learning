@@ -111,6 +111,27 @@ public class DetailDAO {
         }
     }
 
+    public ArrayList<Detail> getAllByCommandeId(int commande_id) {
+        ArrayList<Detail> categories = new ArrayList<>();
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT * FROM details WHERE id_commande = ?");
+            ps.setInt(1, commande_id);
+            ResultSet resultat = ps.executeQuery();
+            while(resultat.next()) {
+                Detail u = new Detail();
+                u.setId(resultat.getInt("id"));
+                u.setQuantite(resultat.getInt("quantite"));
+                u.setPrixU(resultat.getDouble("prixU"));
+                u.setId_commande(resultat.getInt("id_commande"));
+                u.setId_produit(resultat.getInt("id_produit"));
+                categories.add(u);
+            }
+            return categories;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void deleteById(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("DELETE FROM details WHERE id = ?");

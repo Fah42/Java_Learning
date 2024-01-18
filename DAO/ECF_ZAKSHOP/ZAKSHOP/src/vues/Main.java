@@ -79,12 +79,15 @@ public class Main {
 
     public static void displayProduct() {
         ArrayList<Produit> produits = new ArrayList<>();
-        ProduitDAO pdao = new ProduitDAO();
-
-        produits = pdao.getAll();
+        ProduitDAO produitDAO = new ProduitDAO();
+        CategorieDAO categorieDAO = new CategorieDAO();
+        Categorie categorie = new Categorie();
+        produits = produitDAO.getAll();
 
         System.out.print("------ Affichage des Produits ------\n");
         for (Produit produit : produits) {
+            categorie = categorieDAO.getById(produit.getId_categorie());
+            produit.setCategorie(categorie);
             System.out.println(produit);
         }
     }
@@ -92,69 +95,86 @@ public class Main {
     public static void addProduct() {
         CategorieDAO categorieDAO = new CategorieDAO();
         ProduitDAO produitDAO = new ProduitDAO();
-        Produit produit = new Produit();
-        boolean isTitleValid = false;
-        String title;
-        Double price;
-        int id_categorie;
-        int stock;
-        
-        System.out.println("------ Ajout de Produit ------");
-        displayCategorie();
-        while(true) {
-            System.out.println("Veuillez choisir à quelle catégorie appartiendra le produit en sélectionnant l'id correspondant, en utilisant uniquement des caractères numériques : ");
-            if (scanner.hasNextInt()) {
-                id_categorie = scanner.nextInt();
-                scanner.nextLine();
-                if(categorieDAO.getById(id_categorie) != null) {
-                    produit.setId_categorie(id_categorie);
-                    break;
-                }
-                System.out.println("ID inexistant.\n");
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.\n");
-                scanner.next();
-            }
-        }
+        String response;
 
-        while(!isTitleValid) {
-            System.out.println("Veuillez entrer le nom du produit : ");
-            title = scanner.nextLine();
+        do {
+            Produit produit = new Produit();
+            boolean isTitleValid = false;
+            String title;
+            Double price;
+            int id_categorie;
+            int stock;
+        
+            System.out.println("------ Ajout de Produit ------");
+            displayCategorie();
+            while(true) {
+                System.out.println("Veuillez choisir à quelle catégorie appartiendra le produit en sélectionnant l'id correspondant, en utilisant uniquement des caractères numériques : ");
+                if (scanner.hasNextInt()) {
+                    id_categorie = scanner.nextInt();
+                    scanner.nextLine();
+                    if(categorieDAO.getById(id_categorie) != null) {
+                        produit.setId_categorie(id_categorie);
+                        break;
+                    }
+                    System.out.println("ID inexistant.\n");
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.\n");
+                    scanner.next();
+                }
+            }
     
-            if (produit.setTitre(title)) {
-                isTitleValid = true;
-            } else {
-                System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.\n");
-            }
-        }
+            while(!isTitleValid) {
+                System.out.println("Veuillez entrer le nom du produit : ");
+                title = scanner.nextLine();
         
-        while(true) {
-            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
-            if (scanner.hasNextDouble()){
-                price = scanner.nextDouble();
-                produit.setPrix(price);
-                scanner.nextLine();
-                break;
-            } else {
-                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.\n");
-                scanner.nextLine();
+                if (produit.setTitre(title)) {
+                    isTitleValid = true;
+                } else {
+                    System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.\n");
+                }
             }
-        }
-        
-        while(true) {
-            System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
-            if (scanner.hasNextInt()){
-                stock = scanner.nextInt();
-                produit.setStock(stock);
-                scanner.nextLine();
-                break;
-            } else {
-                System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.\n");
-                scanner.nextLine();
+            
+            while(true) {
+                System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+                if (scanner.hasNextDouble()){
+                    price = scanner.nextDouble();
+                    scanner.nextLine();
+                    if (produit.setPrix(price)) {
+                        break;
+                    } else {
+                        System.out.println("Veuillez entrer une valeur positive.\n");
+                    }
+                } else {
+                    System.out.print("La somme entré n'est pas valide. Veuillez réessayer.\n");
+                    scanner.next();
+                }
             }
-        }
-        System.out.println("Ajout reussi !");
-        produitDAO.save(produit);
+            
+            while(true) {
+                System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
+                if (scanner.hasNextInt()){
+                    stock = scanner.nextInt();
+                    if (stock <= 0) {
+                        System.out.println("Veuillez entrer une valeur positive.\n");
+                    } else {
+                        produit.setStock(stock);
+                        scanner.nextLine();
+                        break;
+                    }
+                } else {
+                    System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.\n");
+                    scanner.nextLine();
+                }
+            }
+            produitDAO.save(produit);
+            System.out.println("Produit ajouté avec succès.");
+            System.out.println("Voulez-vous ajouter un autre produit ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void modifyProduct() {
@@ -211,36 +231,42 @@ public class Main {
             if (produit.setTitre(title)) {
                 isTitleValid = true;
             } else {
-                System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.");
+                System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.\n");
             }
         }
-
+        
         while(true) {
             System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
             if (scanner.hasNextDouble()){
                 price = scanner.nextDouble();
                 scanner.nextLine();
-                produit.setPrix(price);
-                break;
+                if (produit.setPrix(price)) {
+                    break;
+                } else {
+                    System.out.println("Veuillez entrer une valeur positive.\n");
+                }
             } else {
-                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
-                scanner.nextLine();
+                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.\n");
+                scanner.next();
             }
         }
-
+        
         while(true) {
             System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
             if (scanner.hasNextInt()){
                 stock = scanner.nextInt();
-                scanner.nextLine();
-                produit.setStock(stock);
-                break;
+                if (stock <= 0) {
+                    System.out.println("Veuillez entrer une valeur positive.\n");
+                } else {
+                    produit.setStock(stock);
+                    scanner.nextLine();
+                    break;
+                }
             } else {
-                System.out.println("La somme entré n'est pas valide. Veuillez réessayer.");
+                System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.\n");
                 scanner.nextLine();
             }
         }
-
         produitDAO.save(produit);
         System.out.println("Modification reussi !");
     }
@@ -277,7 +303,8 @@ public class Main {
         System.out.println("------ Recherche d'un Produit ------");
         System.out.println("Veuillez entrer le terme de la recherche ");
         search = scanner.nextLine();
-        searchResults = produitDAO.searchProduct(search);
+        searchResults = produitDAO.searchProducts(search);
+
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Produit produit : searchResults) {
@@ -589,23 +616,55 @@ public class Main {
     }
 
     public static void displayOrder() {
-        ArrayList<Commande> commandes = new ArrayList<>();
-        CommandeDAO clientDAO = new CommandeDAO();
-
-        commandes = clientDAO.getAll();
-
+        CommandeDAO commandeDAO = new CommandeDAO();
+        DetailDAO detailDAO = new DetailDAO();
+        ProduitDAO produitDAO = new ProduitDAO();
+        ClientDAO clientDAO = new ClientDAO();
+        
+        ArrayList<Commande> commandes = commandeDAO.getAll();
+        
         System.out.print("------ Affichage des Commandes ------\n");
         for (Commande commande : commandes) {
-            System.out.println(commande);
+            ArrayList<Detail> details = detailDAO.getAllByCommandeId(commande.getId());
+            Client client = new Client();
+            Produit produit = new Produit();
+            double prixDetail;
+            double prixTotal;
+            
+            if (!details.isEmpty()) {
+                client = clientDAO.getById(commande.getId_client());
+                System.out.println("Commande numero : " + commande.getId());
+                System.out.println("Client : " + client.getNom() + " " + client.getPrenom());
+                System.out.println("Date d'achat " + commande.getDateF());
+                prixTotal = 0;
+                for (Detail detail : details) {
+                    produit = produitDAO.getById(detail.getId_produit());
+                    prixDetail = produit.getPrix() * detail.getQuantite();
+                    prixTotal += prixDetail;
+                    System.out.println("Produit: " + produit.getTitre() + ", Quantité: " + detail.getQuantite() + ", Prix Unitaire: " + produit.getPrix() + ", Prix Total: " + prixDetail);
+                }
+    
+                System.out.println("Prix Total de la Commande: " + prixTotal + "\n");
+            }
         }
     }
 
     public static void addOrder() {
         CommandeDAO commandeDAO = new CommandeDAO();
         ClientDAO clientDAO = new ClientDAO();
+        DetailDAO detailDAO = new DetailDAO();
+        ProduitDAO produitDAO = new ProduitDAO();
         Commande commande = new Commande();
+        Produit produit = new Produit();
+        Detail detail = new Detail();
+        boolean response = true;
+        boolean is_quantite_avaible = true;
         int id_client;
-        
+        int id_commande;
+        int id_produit;
+        int prixU;
+        int quantite;
+
         System.out.println("------ Ajout de Commande ------");
         while(true) {
             displayClient();
@@ -624,14 +683,70 @@ public class Main {
                 scanner.next();
             }
         }
-        commandeDAO.save(commande);
+        id_commande = commandeDAO.save(commande);
+
+        while (response) {
+            while(true) {
+                displayProduct();
+                System.out.println("Entrer l'ID du produit : ");
+                if (scanner.hasNextInt()) {
+                    id_produit = scanner.nextInt();
+                    scanner.nextLine();
+                    produit = produitDAO.getById(id_produit);
+                    break;
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                }
+            }
+            while(true) {
+                System.out.println("Entrer la quantité : ");
+                if(scanner.hasNextInt()) {
+                    quantite = scanner.nextInt();
+                    scanner.nextLine();
+                    if(produit.getStock() >= quantite) {
+                        break;
+                    } else {
+                        System.out.println("Le stock ne dispose pas de cette quantite.");
+                        is_quantite_avaible = false;
+                        break;
+                    }
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                }
+            }
+            if(is_quantite_avaible) {
+                while(true){
+                    System.out.println("Entrer le prix du produit : (prix conseille hors promotion :" + produit.getPrix());
+                    if(scanner.hasNextInt()){
+                        prixU = scanner.nextInt();
+                        scanner.nextLine();
+                        break;
+                    } else {
+                        System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                    }
+                }
+                produit.setStock(produit.getStock() - quantite);
+                produitDAO.save(produit);
+                detail = new Detail(quantite, prixU, id_commande, id_produit);
+                detailDAO.save(detail);
+        
+                System.out.println("Ajouter un autre produit ? (Oui/Non)");
+                response = scanner.next().equalsIgnoreCase("oui");
+            }
+        }
+
+    System.out.println("Commande créée avec succès.");
     }
 
     public static void deleteOrder() {
         CommandeDAO commandeDAO = new CommandeDAO();
         PaiementDAO paiementDAO = new PaiementDAO();
         DetailDAO detailDAO = new DetailDAO();
+        Produit produit = new Produit();
+        Detail detail = new Detail();
+        int returnToStock;
         int userChoice;
+        int id_produit;
 
         System.out.println("------ Suppresion d'une Commande ------");   
         displayOrder();
@@ -640,8 +755,14 @@ public class Main {
             userChoice = scanner.nextInt();
             scanner.nextLine();
             if (commandeDAO.getById(userChoice) != null) {
-                if (detailDAO.getByIdCommande(userChoice) != null) {
+                detail = detailDAO.getByIdCommande(userChoice);
+                if (detail != null) {
+                    ProduitDAO produitDAO = new ProduitDAO();
                     detailDAO.deleteByIdCommande(userChoice);
+                    id_produit = detail.getId_produit();
+                    produit = produitDAO.getById(id_produit);
+                    returnToStock = detail.getQuantite();
+                    produit.setStock(produit.getStock() + returnToStock);
                 }
                 if (paiementDAO.getByIdCommande(userChoice) != null) {
                     paiementDAO.deleteByIdCommande(userChoice);
@@ -662,7 +783,7 @@ public class Main {
 
         fournisseurs = fournisseurDAO.getAll();
 
-        System.out.print("------ Affichage des Produits ------\n");
+        System.out.print("------ Affichage des Fournisseurs ------\n");
         for (Fournisseur produit : fournisseurs) {
             System.out.println(produit);
         }
@@ -806,6 +927,7 @@ public class Main {
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
         ProduitDAO produitDAO = new ProduitDAO();
         Entree_stock entree_stock = new Entree_stock();
+        Produit produit = new Produit();
         int id_fournisseur;
         int id_produit;
         int quantite;
@@ -818,7 +940,9 @@ public class Main {
             if (scanner.hasNextInt()) {
                 id_produit = scanner.nextInt();
                 scanner.nextLine();
-                if(produitDAO.getById(id_produit) != null){
+                produit = produitDAO.getById(id_produit);
+                if(produit != null){
+                    
                     entree_stock.setId_produit(id_produit);
                     break;
                 } else {
@@ -831,6 +955,7 @@ public class Main {
         }
 
         while (true) {
+            displaySupplier();
             System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");          
             if (scanner.hasNextInt()) {
                 id_fournisseur = scanner.nextInt();
@@ -846,12 +971,13 @@ public class Main {
                 scanner.next();
             }
         }
-
+        
         while (true) {
             System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
             if (scanner.hasNextInt()) {
                 quantite = scanner.nextInt();
                 entree_stock.setQuantite(quantite);
+                produit.setStock(produit.getStock() + quantite);
                 scanner.nextLine();
                 break;
             } else {
@@ -859,6 +985,7 @@ public class Main {
                 scanner.next();
             }
         }
+        produitDAO.save(produit);
         entree_stockDAO.save(entree_stock);
     }
 
@@ -885,12 +1012,18 @@ public class Main {
     public static void displayPaiement() {
         ArrayList<Paiement> paiements = new ArrayList<>();
         PaiementDAO paiementDAO = new PaiementDAO();
-
+        CommandeDAO commandeDAO = new CommandeDAO();
+        ClientDAO clientDAO = new ClientDAO();
+        Commande commande = new Commande();
+        Client client = new Client();
+        
         paiements = paiementDAO.getAll();
-
         System.out.print("------ Affichage des Paiements ------\n");
-        for (Paiement paiement : paiements) {
-            System.out.println(paiement);
+        for (Paiement paiement : paiements) { 
+            commande = commandeDAO.getById(paiement.getId_commande());
+            client = clientDAO.getById(commande.getId_client());
+            paiement.setCommande(commande);
+            System.out.println(paiement + " - [Nom :" + client.getNom() + "] - [Prenom :" + client.getPrenom() + "]");
         }
     }
 
@@ -898,7 +1031,7 @@ public class Main {
         PaiementDAO paiementDAO = new PaiementDAO();
         CommandeDAO commandeDAO = new CommandeDAO();
         Paiement paiement = new Paiement();
-        Double price;
+        Double paid;
         int id_commande;
 
         System.out.println("------ Paiement ------");
@@ -924,12 +1057,13 @@ public class Main {
         while(true) {
             System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
             if (scanner.hasNextDouble()) {
-                price = scanner.nextDouble();
-                paiement.setMontant(price);
+                paid = scanner.nextDouble();
                 scanner.nextLine();
+                paiement.setMontant(paid);
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+                scanner.next();
             }
         }
         paiementDAO.save(paiement);
@@ -985,11 +1119,12 @@ public class Main {
             System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
             if (scanner.hasNextDouble()) {
                 price = scanner.nextDouble();
-                paiement.setMontant(price);
                 scanner.nextLine();
+                paiement.setMontant(price);
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+                scanner.next();
             }
         }
         paiementDAO.save(paiement);
@@ -1055,6 +1190,6 @@ public class Main {
             userChoice = scanner.nextInt();
             scanner.nextLine();
         } while (userChoice < 0 || userChoice > 29);
-        return scanner.nextInt();
+        return userChoice;
     }
 }

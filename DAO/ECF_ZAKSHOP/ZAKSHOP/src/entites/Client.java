@@ -83,11 +83,7 @@ public class Client {
     @Override
     public String toString() {
         return 
-            "id = " + getId() + 
-            "\nnom = " + getNom() +
-            "\nprenom = " + getPrenom() + 
-            "\nage = " + getAge() +
-            "\nville = " + getVille() + "\n-----------------------------";
+            getId() + " [nom : " + getNom() + "] - [prenom :" + getPrenom() + "] - [age : " + getAge() + "] - [ville : " + getVille() + "]";
     }
      
 }

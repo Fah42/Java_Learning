@@ -43,7 +43,7 @@ public class Entree_stockDAO {
             u.setId(resultat.getInt("id"));
             u.setId_produit(resultat.getInt("id_produit"));
             u.setId_fournisseur(resultat.getInt("id_fournisseur"));
-            u.setQuantite(resultat.getInt("quanttite"));
+            u.setQuantite(resultat.getInt("quantite"));
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class Entree_stockDAO {
             u.setId(resultat.getInt("id"));
             u.setId_produit(resultat.getInt("id_produit"));
             u.setId_fournisseur(resultat.getInt("id_fournisseur"));
-            u.setQuantite(resultat.getInt("quanttite"));
+            u.setQuantite(resultat.getInt("quantite"));
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class Entree_stockDAO {
             u.setId(resultat.getInt("id"));
             u.setId_produit(resultat.getInt("id_produit"));
             u.setId_fournisseur(resultat.getInt("id_fournisseur"));
-            u.setQuantite(resultat.getInt("quanttite"));
+            u.setQuantite(resultat.getInt("quantite"));
             u.setDateE(resultat.getDate("dateE"));
             return u;
         } catch (Exception e) {
@@ -99,6 +99,7 @@ public class Entree_stockDAO {
                 u.setId(resultat.getInt("id"));
                 u.setId_produit(resultat.getInt("id_produit"));
                 u.setId_fournisseur(resultat.getInt("id_fournisseur"));
+                u.setQuantite(resultat.getInt("quantite"));
                 u.setDateE(resultat.getDate("dateE"));
                 categories.add(u);
             }

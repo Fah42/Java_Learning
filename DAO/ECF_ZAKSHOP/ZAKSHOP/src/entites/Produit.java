@@ -6,23 +6,26 @@ public class Produit {
     private double prix;
     private int id_categorie;
     private int stock;
+    private Categorie categorie;
 
     public Produit() {
     }
 
-    public Produit(String titre, double prix, int id_categorie, int stock) {
+    public Produit(String titre, double prix, Categorie categorie,int id_categorie, int stock) {
         this.titre = titre;
         this.prix = prix;
         this.id_categorie = id_categorie;
         this.stock = stock;
+        this.categorie = categorie;
     }
 
-    public Produit(int id, String titre, double prix, int id_categorie, int stock) {
+    public Produit(int id, String titre, double prix, Categorie categorie, int id_categorie, int stock) {
         this.id = id;
         this.titre = titre;
         this.prix = prix;
         this.id_categorie = id_categorie;
         this.stock = stock;
+        this.categorie = categorie;
     }
 
     public int getId() {
@@ -50,8 +53,13 @@ public class Produit {
         return this.prix;
     }
 
-    public void setPrix(double prix) {
-        this.prix = prix;
+    public boolean setPrix(double prix) {
+        if (prix < 0) {
+            return false;
+        } else {
+            this.prix = prix;
+            return true;
+        }
     }
 
     public int getId_categorie() {
@@ -69,16 +77,17 @@ public class Produit {
     public void setStock(int stock) {
         this.stock = stock;
     }
+    
+    public Categorie getCategorie(Categorie categorie) {
+        return this.categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", titre='" + getTitre() + "'" +
-            ", prix='" + getPrix() + "'" +
-            ", id_categorie='" + getId_categorie() + "'" +
-            ", stock='" + getStock() + "'" +
-            "}";
+        return getId() + " - [Titre : " + getTitre() + "] - [Prix : " + getPrix() + "] - [Categorie : " + categorie.getTitre() + "] - [Stock : " + getStock() + "]";
     }
-    
 }
