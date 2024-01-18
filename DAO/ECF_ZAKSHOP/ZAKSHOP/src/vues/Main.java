@@ -521,13 +521,19 @@ public class Main {
 
     public static void displayCategorie() {
         ArrayList<Categorie> categories = new ArrayList<>();
-        CategorieDAO clientDAO = new CategorieDAO();
-
-        categories = clientDAO.getAll();
+        CategorieDAO categorieDAO = new CategorieDAO();
+        int nbCategories = 0;
+        ProduitDAO produitDAO = new ProduitDAO();
+        
+        categories = categorieDAO.getAll();
+       
+        
 
         System.out.print("------ Affichage des Categories ------\n");
         for (Categorie categorie : categories) {
-            System.out.println(categorie);
+            categorie = categorieDAO.getById(categorie.getId());
+            nbCategories = produitDAO.countProductByIdCategorie(categorie.getId());
+            System.out.println(categorie + " Nombre de produit : " + nbCategories);
         }
     }
 

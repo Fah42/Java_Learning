@@ -132,4 +132,17 @@ public class ProduitDAO {
             return null;
         }
     }
+    /* Create a methode count product by idcategorie as result*/
+    public int countProductByIdCategorie(int id) {
+        try {
+            PreparedStatement ps = Database.connexion.prepareStatement("SELECT COUNT(*) as total FROM produit WHERE id_categorie = ?");
+            ps.setInt(1, id);
+            ResultSet resultat = ps.executeQuery();
+            resultat.next();
+            return resultat.getInt(1);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    
 }

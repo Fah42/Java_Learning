@@ -106,5 +106,6 @@ public class PaiementDAO {
             return;
         }
     }
+    /* create method countProduct by id_categorie in sql */
 }
 
