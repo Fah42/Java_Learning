@@ -3,8 +3,10 @@ package vues;
 import dao.*;
 import entites.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.format.DateTimeParseException;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
@@ -77,6 +79,15 @@ public class Main {
         }
     }
 
+    public static boolean isDateFormatValid(String date) {
+        try {
+            LocalDate.parse(date);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+    
     public static void displayProduct() {
         ArrayList<Produit> produits = new ArrayList<>();
         ProduitDAO produitDAO = new ProduitDAO();
@@ -296,15 +307,15 @@ public class Main {
     }
 
     public static void searchProduct() {
-        ArrayList<Produit> searchResults = new ArrayList<>();
         ProduitDAO produitDAO =  new ProduitDAO();
+        ArrayList<Produit> searchResults = new ArrayList<>();
         String search;
 
-        System.out.println("------ Recherche d'un Produit ------");
-        System.out.println("Veuillez entrer le terme de la recherche ");
+        System.out.println("------ Recherche de Produit ------");
+        System.out.println("Veuillez entrer le terme de la recherche ");        
         search = scanner.nextLine();
         searchResults = produitDAO.searchProducts(search);
-
+        
         if (searchResults != null) {
             System.out.println("Resultat de la recherche : ");
             for (Produit produit : searchResults) {
@@ -389,9 +400,13 @@ public class Main {
             System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
-                scanner.nextLine();
-                client.setAge(age);
-                break;
+                if (age <= 0 ) {
+                    System.out.println("Veuillez entrer une valeur positive.");
+                } else {
+                    scanner.nextLine();
+                    client.setAge(age);
+                    break;
+                }
             } else {
                 System.out.println("Valeur invalide.");
             }
@@ -469,9 +484,13 @@ public class Main {
             System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
-                scanner.nextLine();
-                client.setAge(age);
-                break;
+                if (age <= 0 ) {
+                    System.out.println("Veuillez entrer une valeur positive.");
+                } else {
+                    scanner.nextLine();
+                    client.setAge(age);
+                    break;
+                }
             } else {
                 System.out.println("Valeur invalide.");
             }
@@ -709,12 +728,16 @@ public class Main {
                 if(scanner.hasNextInt()) {
                     quantite = scanner.nextInt();
                     scanner.nextLine();
-                    if(produit.getStock() >= quantite) {
-                        break;
+                    if (quantite > 0) {
+                        if(produit.getStock() >= quantite) {
+                            break;
+                        } else {
+                            System.out.println("Le stock ne dispose pas de cette quantite.");
+                            is_quantite_avaible = false;
+                            break;
+                        }
                     } else {
-                        System.out.println("Le stock ne dispose pas de cette quantite.");
-                        is_quantite_avaible = false;
-                        break;
+                        System.out.println("Veuillez entrer une valeur positive.");
                     }
                 } else {
                     System.out.println("Entrée invalide. Veuillez entrer un nombre.");
@@ -725,8 +748,12 @@ public class Main {
                     System.out.println("Entrer le prix du produit : (prix conseille hors promotion :" + produit.getPrix());
                     if(scanner.hasNextInt()){
                         prixU = scanner.nextInt();
-                        scanner.nextLine();
-                        break;
+                        if(prixU > 0){
+                            scanner.nextLine();
+                            break;
+                        } else {
+                            System.out.println("Veuillez entrer une valeur positive.");
+                        }
                     } else {
                         System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                     }
@@ -982,10 +1009,14 @@ public class Main {
             System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
             if (scanner.hasNextInt()) {
                 quantite = scanner.nextInt();
-                entree_stock.setQuantite(quantite);
-                produit.setStock(produit.getStock() + quantite);
-                scanner.nextLine();
-                break;
+                if (quantite > 0) {
+                    entree_stock.setQuantite(quantite);
+                    produit.setStock(produit.getStock() + quantite);
+                    scanner.nextLine();
+                    break;
+                } else {
+                    System.out.println("Veuillez entrer une valeur positive.");
+                }
             } else {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                 scanner.next();
@@ -1069,6 +1100,25 @@ public class Main {
                 break;
             } else {
                 System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+                scanner.next();
+            }
+        }
+
+        while (true) {
+            System.out.println("Veuillez entrer la date du paiement au format YYYY-MM-DD : ");
+            if (scanner.hasNextLine()) {
+                String date = scanner.nextLine();
+                if (isDateFormatValid(date)) {
+                    LocalDate localDate = LocalDate.parse(date);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+                    paiement.setDateP(sqlDate);
+                    break;
+                } else {
+                    System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
+                    scanner.next();
+                }
+            } else {
+                System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
                 scanner.next();
             }
         }

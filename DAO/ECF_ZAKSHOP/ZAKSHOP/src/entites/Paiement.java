@@ -55,8 +55,8 @@ public class Paiement {
         return this.dateP;
     }
 
-    public void setDateP(Date dateP) {
-        this.dateP = dateP;
+    public void setDateP(Date date) {
+        this.dateP = date;
     }
 
     public Commande getCommande(Commande commande) {

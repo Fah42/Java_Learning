@@ -8,7 +8,7 @@ import entites.Database;
 import entites.Produit;
 
 public class ProduitDAO {
-
+    private CategorieDAO categorieDAO = new CategorieDAO();
     public void save(Produit produit) {
         try {
             if(produit.getId() != 0) {
@@ -45,6 +45,7 @@ public class ProduitDAO {
             u.setPrix(resultat.getDouble("prix"));
             u.setId_categorie(resultat.getInt("id_categorie"));
             u.setStock(resultat.getInt("stock"));
+            u.setCategorie(categorieDAO.getById(resultat.getInt("id_categorie")));
             return u;
         } catch (Exception e) {
             return null;
@@ -85,7 +86,8 @@ public class ProduitDAO {
                 produits.add(u);
             }
             return produits;
-        } catch (Exception e) {;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -125,6 +127,7 @@ public class ProduitDAO {
                 p.setPrix(resultat.getDouble("prix"));
                 p.setId_categorie(resultat.getInt("id_categorie"));
                 p.setStock(resultat.getInt("stock"));
+                p.setCategorie(categorieDAO.getById(resultat.getInt("id_categorie")));
                 produits.add(p);
             }
             return produits;
@@ -132,7 +135,7 @@ public class ProduitDAO {
             return null;
         }
     }
-    /* Create a methode count product by idcategorie as result*/
+
     public int countProductByIdCategorie(int id) {
         try {
             PreparedStatement ps = Database.connexion.prepareStatement("SELECT COUNT(*) as total FROM produit WHERE id_categorie = ?");
