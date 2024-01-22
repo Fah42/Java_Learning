@@ -80,6 +80,7 @@ public class CommandeDAO {
             }
             return categories;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

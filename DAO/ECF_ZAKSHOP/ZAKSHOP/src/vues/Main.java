@@ -88,6 +88,21 @@ public class Main {
         }
     }
     
+    public static Double alreadyPaid(int id_commande) {
+        ArrayList<Paiement> paiements = new ArrayList<>();
+        PaiementDAO paiementDAO = new PaiementDAO();
+        paiements = paiementDAO.getAll();
+        Double alreadyPaid = 0.0;
+
+        for (Paiement paiement : paiements) {
+            if (paiement.getId_commande() == id_commande) {
+                alreadyPaid += paiement.getMontant();
+            }
+        }
+
+        return alreadyPaid;
+    }
+
     public static void displayProduct() {
         ArrayList<Produit> produits = new ArrayList<>();
         ProduitDAO produitDAO = new ProduitDAO();
@@ -194,92 +209,101 @@ public class Main {
         boolean isTitleValid = false;
         Produit produit; 
         String title;
+        String response;
         Double price;
         int userChoice;
         int id_categorie;
         int stock;
 
-        System.out.println("------ Modification de Produit ------");
-        while(true) {
-            displayProduct();
-            System.out.println("Veuillez entrer l'id du produit à modifier, uniquement en valeur numérique : ");
-            if (scanner.hasNextInt()) {
-                userChoice = scanner.nextInt();
-                scanner.nextLine();
-                produit = produitDAO.getById(userChoice);
-                if (produit != null) {
-                    break;
-                } else {
-                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.nextLine();
-            }
-        }
-
-        while(true) {
-            displayCategorie();
-            System.out.println("Veuillez choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            if (scanner.hasNextInt()) {
-                id_categorie = scanner.nextInt();
-                scanner.nextLine();
-                if (categorieDAO.getById(id_categorie) != null) {
-                    produit.setId_categorie(id_categorie);
-                    break;
-                }
-                System.out.println("Veuillez entrer un ID existant : ");
-            } else {
-                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.nextLine(); 
-            }
-        }
-
-        while(!isTitleValid) {
-            System.out.println("Veuillez entrer le nom du produit : ");
-            title = scanner.nextLine();
-    
-            if (produit.setTitre(title)) {
-                isTitleValid = true;
-            } else {
-                System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.\n");
-            }
-        }
-        
-        while(true) {
-            System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
-            if (scanner.hasNextDouble()){
-                price = scanner.nextDouble();
-                scanner.nextLine();
-                if (produit.setPrix(price)) {
-                    break;
-                } else {
-                    System.out.println("Veuillez entrer une valeur positive.\n");
-                }
-            } else {
-                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.\n");
-                scanner.next();
-            }
-        }
-        
-        while(true) {
-            System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
-            if (scanner.hasNextInt()){
-                stock = scanner.nextInt();
-                if (stock <= 0) {
-                    System.out.println("Veuillez entrer une valeur positive.\n");
-                } else {
-                    produit.setStock(stock);
+        do {
+            System.out.println("------ Modification de Produit ------");
+            while(true) {
+                displayProduct();
+                System.out.println("Veuillez entrer l'id du produit à modifier, uniquement en valeur numérique : ");
+                if (scanner.hasNextInt()) {
+                    userChoice = scanner.nextInt();
                     scanner.nextLine();
-                    break;
+                    produit = produitDAO.getById(userChoice);
+                    if (produit != null) {
+                        break;
+                    } else {
+                        System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    }
+                } else {
+                    System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                    scanner.nextLine();
                 }
-            } else {
-                System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.\n");
-                scanner.nextLine();
             }
-        }
-        produitDAO.save(produit);
-        System.out.println("Modification reussi !");
+    
+            while(true) {
+                displayCategorie();
+                System.out.println("Veuillez choisir a quel categorie appartiendra le produit en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+                if (scanner.hasNextInt()) {
+                    id_categorie = scanner.nextInt();
+                    scanner.nextLine();
+                    if (categorieDAO.getById(id_categorie) != null) {
+                        produit.setId_categorie(id_categorie);
+                        break;
+                    }
+                    System.out.println("Veuillez entrer un ID existant : ");
+                } else {
+                    System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                    scanner.nextLine(); 
+                }
+            }
+    
+            while(!isTitleValid) {
+                System.out.println("Veuillez entrer le nom du produit : ");
+                title = scanner.nextLine();
+        
+                if (produit.setTitre(title)) {
+                    isTitleValid = true;
+                } else {
+                    System.out.println("Le titre entré n'est pas valide. Veuillez réessayer.\n");
+                }
+            }
+            
+            while(true) {
+                System.out.println("Veuillez entrer le prix du produit uniquement en valeur numerique : ");
+                if (scanner.hasNextDouble()){
+                    price = scanner.nextDouble();
+                    scanner.nextLine();
+                    if (produit.setPrix(price)) {
+                        break;
+                    } else {
+                        System.out.println("Veuillez entrer une valeur positive.\n");
+                    }
+                } else {
+                    System.out.print("La somme entré n'est pas valide. Veuillez réessayer.\n");
+                    scanner.next();
+                }
+            }
+            
+            while(true) {
+                System.out.println("Veuillez entrer le nombre de produit uniquement en valeur numerique : ");
+                if (scanner.hasNextInt()){
+                    stock = scanner.nextInt();
+                    if (stock <= 0) {
+                        System.out.println("Veuillez entrer une valeur positive.\n");
+                    } else {
+                        produit.setStock(stock);
+                        scanner.nextLine();
+                        break;
+                    }
+                } else {
+                    System.out.println("Le nombre de produit entré n'est pas valide. Veuillez réessayer.\n");
+                    scanner.nextLine();
+                }
+            }
+            produitDAO.save(produit);
+            System.out.println("Modification reussi !");
+            System.out.println("Voulez-vous modifier un autre produit ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void deleteProduct() {
@@ -287,53 +311,78 @@ public class Main {
         ProduitDAO produitDAO = new ProduitDAO();
         DetailDAO detailDAO = new DetailDAO();
         int userChoice;
+        String response;
+        String areYouSure;
 
-        System.out.println("------ Suppresion d'un Produit ------");
-        displayProduct();
-        System.out.println("Veuillez entrer l'id du produit a supprimer en utilisant uniquement des chiffres : ");
-        userChoice = scanner.nextInt();
-        scanner.nextLine();
-        if (produitDAO.getById(userChoice) != null) {
-            produitDAO.deleteById(userChoice);
-            if (detailDAO.getByIdProduct(userChoice) != null) {
-                detailDAO.deleteByIdProduct(userChoice);
+        do {
+            System.out.println("------ Suppresion d'un Produit ------");
+            displayProduct();
+            System.out.println("Veuillez entrer l'id du produit a supprimer en utilisant uniquement des chiffres : ");
+            userChoice = scanner.nextInt();
+            scanner.nextLine();
+            if (produitDAO.getById(userChoice) != null) {
+                System.out.println("Etes vous sur de vouloir supprimer le produit: '" + produitDAO.getById(userChoice).getTitre()+ "', Veuillez repondre par (Oui/Non)");
+                areYouSure = scanner.nextLine();
+                while (!"Oui".equalsIgnoreCase(areYouSure) && !"Non".equalsIgnoreCase(areYouSure)) {
+                    System.out.println("Veuillez repondre uniquement par (Oui/Non)");
+                    areYouSure = scanner.nextLine();
+                }
+                if("Oui".equalsIgnoreCase(areYouSure)) {
+                    if (entree_stockDAO.getByIdProduct(userChoice) != null) {
+                        entree_stockDAO.deleteByIdProduct(userChoice);
+                    }
+                    if (detailDAO.getByIdProduct(userChoice) != null) {
+                        detailDAO.deleteByIdProduct(userChoice);
+                    }
+                    produitDAO.deleteById(userChoice);
+                } else {
+                    System.out.println("Suppressions Annulee !.");
+                }
+            } else {
+                System.out.println("Erreur ID invalide");
             }
-            if (entree_stockDAO.getByIdProduct(userChoice) != null) {
-                entree_stockDAO.deleteByIdProduct(userChoice);
+            System.out.println("Suppression Reussi !");
+            System.out.println("Voulez-vous supprimer un autre produit ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
             }
-        } else {
-            System.out.println("Erreur ID invalide");
-        }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void searchProduct() {
         ProduitDAO produitDAO =  new ProduitDAO();
         ArrayList<Produit> searchResults = new ArrayList<>();
         String search;
+        String response;
 
-        System.out.println("------ Recherche de Produit ------");
-        System.out.println("Veuillez entrer le terme de la recherche ");        
-        search = scanner.nextLine();
-        searchResults = produitDAO.searchProducts(search);
-        
-        if (searchResults != null) {
-            System.out.println("Resultat de la recherche : ");
-            for (Produit produit : searchResults) {
-                System.out.println(produit);
+        do {
+            System.out.println("------ Recherche de Produit ------");
+            System.out.println("Veuillez entrer le terme de la recherche ");        
+            search = scanner.nextLine();
+            searchResults = produitDAO.searchProducts(search);
+            if (searchResults != null) {
+                System.out.println("Resultat de la recherche : ");
+                for (Produit produit : searchResults) {
+                    System.out.println(produit);
+                }
+            } else {
+                System.out.println("Aucun resultat trouve pour : " + search);
+            }    
+            System.out.println("Voulez-vous rechercher un autre produit ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
             }
-        } else {
-            System.out.println("Aucun resultat trouve pour : " + search);
-        }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void displayClient() {
-        ArrayList<Client> clients = new ArrayList<>();
-        ClientDAO clientDAO = new ClientDAO();
-
-        clients = clientDAO.getAll();
 
         System.out.print("------ Affichage des Clients ------\n");
-        for (Client client : clients) {
+        for (Client client : new ClientDAO().getAll()) {
             System.out.println(client);
         }
     }
@@ -343,76 +392,73 @@ public class Main {
         ClientDAO clientDAO = new ClientDAO();
         Client client = new Client();
         boolean isInputValid = false;
-        String lastname;
         String firstname;
+        String lastname;
+        String response;
         String city;
         int age;
 
-        System.out.println("------ Ajout de Client ------");
-        while(!isInputValid){
-            System.out.println("Veuillez entrer le nom du client : ");
-            lastname = scanner.nextLine();
-
-            if (client.setNom(lastname)){
-                isInputValid = true;
-            } else {
-                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-        isInputValid = false;
-
-        while(!isInputValid){
-            System.out.println("Veuillez entrer le prenom du client : ");
-            firstname = scanner.nextLine();
-
-            if (client.setPrenom(firstname)){
-                isInputValid = true;
-            } else {
-                System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-        isInputValid = false;
-
-        while(!isInputValid){
-            System.out.println("Veuillez entrer le prenom du client : ");
-            firstname = scanner.nextLine();
-
-            if (client.setPrenom(firstname)){
-                isInputValid = true;
-            } else {
-                System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-        isInputValid = false;
-
-        while(!isInputValid){
-            System.out.println("Veuillez entrer le ville du client : ");
-            city = scanner.nextLine();
-
-            if (client.setPrenom(city)){
-                isInputValid = true;
-            } else {
-                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-
-        while(true) {
-            System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
-            if (scanner.hasNextInt()) {
-                age = scanner.nextInt();
-                if (age <= 0 ) {
-                    System.out.println("Veuillez entrer une valeur positive.");
+        do {
+            displayClient();
+            System.out.println("------ Ajout de Client ------");
+            while(!isInputValid){
+                System.out.println("Veuillez entrer le nom du client : ");
+                lastname = scanner.nextLine();
+                if (client.setNom(lastname)){
+                    isInputValid = true;
                 } else {
-                    scanner.nextLine();
-                    client.setAge(age);
-                    break;
+                    System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
                 }
-            } else {
-                System.out.println("Valeur invalide.");
             }
-        }
+            isInputValid = false;
+    
+            while(!isInputValid){
+                System.out.println("Veuillez entrer le prenom du client : ");
+                firstname = scanner.nextLine();
+                if (client.setPrenom(firstname)){
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
+            isInputValid = false;
+    
+            while(!isInputValid){
+                System.out.println("Veuillez entrer le ville du client : ");
+                city = scanner.nextLine();
+    
+                if (client.setPrenom(city)){
+                    isInputValid = true;
+                } else {
+                    System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
 
-        clientDAO.save(client);
+            while(true) {
+                System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
+                if (scanner.hasNextInt()) {
+                    age = scanner.nextInt();
+                    if (age <= 0 ) {
+                        System.out.println("Veuillez entrer une valeur positive.");
+                    } else {
+                        scanner.nextLine();
+                        client.setAge(age);
+                        break;
+                    }
+                } else {
+                    System.out.println("Valeur invalide.");
+                    scanner.next();
+                }
+            }
+    
+            clientDAO.save(client);
+            System.out.println("Voulez-vous ajouter un autre client ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response)); 
     }
 
     public static void modifyClient() {
@@ -422,132 +468,166 @@ public class Main {
         String lastname;
         String firstname;
         String city;
+        String response;
         int age;
         int userChoice;
 
-        System.out.println("------ Modification de Client ------");
-        while(true){
-            displayClient();
-            System.out.println("Veuillez entrer l'id du client a modifier : ");
-            if(scanner.hasNextInt()){
-                userChoice = scanner.nextInt();
-                scanner.nextLine();
-                client = clientDAO.getById(userChoice);
-                if(client != null) {
+        do {
+            System.out.println("------ Modification de Client ------");
+            while(true){
+                displayClient();
+                System.out.println("Veuillez entrer l'id du client a modifier : ");
+                if(scanner.hasNextInt()){
+                    userChoice = scanner.nextInt();
                     scanner.nextLine();
-                    break;
-                }
-                System.out.println("Veuillez entrer un ID existant : ");
-                scanner.nextLine();
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.nextLine();
-            }
-        }
-
-        while (!isInputValid) {
-            System.out.println("Veuillez entrer le nom : ");
-            lastname  = scanner.nextLine();
-
-            if(client.setNom(lastname)) {
-                isInputValid = true;
-            } else {
-                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-        isInputValid = false;
-
-        while (!isInputValid) {
-            System.out.println("Veuillez entrer le prenom : ");
-            firstname  = scanner.nextLine();
-
-            if(client.setPrenom(firstname)) {
-                isInputValid = true;
-            } else {
-                System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-        isInputValid = false;
-
-        while (!isInputValid) {
-            System.out.println("Veuillez entrer la ville : ");
-            city  = scanner.nextLine();
-
-            if(client.setVille(city)) {
-                isInputValid = true;
-            } else {
-                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
-            }
-        }
-       
-        while(true) {
-            System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
-            if (scanner.hasNextInt()) {
-                age = scanner.nextInt();
-                if (age <= 0 ) {
-                    System.out.println("Veuillez entrer une valeur positive.");
+                    client = clientDAO.getById(userChoice);
+                    if(client != null) {
+                        scanner.nextLine();
+                        break;
+                    }
+                    System.out.println("Veuillez entrer un ID existant : ");
+                    scanner.nextLine();
                 } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                     scanner.nextLine();
-                    client.setAge(age);
-                    break;
                 }
-            } else {
-                System.out.println("Valeur invalide.");
             }
-        }
-        clientDAO.save(client);
+    
+            while (!isInputValid) {
+                System.out.println("Veuillez entrer le nom : ");
+                lastname  = scanner.nextLine();
+    
+                if(client.setNom(lastname)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
+            isInputValid = false;
+    
+            while (!isInputValid) {
+                System.out.println("Veuillez entrer le prenom : ");
+                firstname  = scanner.nextLine();
+    
+                if(client.setPrenom(firstname)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le prenom entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
+            isInputValid = false;
+    
+            while (!isInputValid) {
+                System.out.println("Veuillez entrer la ville : ");
+                city  = scanner.nextLine();
+    
+                if(client.setVille(city)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
+           
+            while(true) {
+                System.out.println("Veuillez entrer l'age uniquement en valeur numerique : ");
+                if (scanner.hasNextInt()) {
+                    age = scanner.nextInt();
+                    if (age <= 0 ) {
+                        System.out.println("Veuillez entrer une valeur positive.");
+                    } else {
+                        scanner.nextLine();
+                        client.setAge(age);
+                        break;
+                    }
+                } else {
+                    System.out.println("Valeur invalide.");
+                }
+            }
+            clientDAO.save(client);
+            System.out.println("Voulez-vous modifier un autre client ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void deleteClient() {
         ClientDAO clientDAO = new ClientDAO();
         int userChoice;
+        String response;
+        String areYouSure;
 
-        System.out.println("------ Suppresion de Client ------");
-        displayClient();
-        System.out.println("Veuillez entrer l'id du client a supprimer : ");
-        if(scanner.hasNextInt()){
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (clientDAO.getById(userChoice) != null) {
-                clientDAO.deleteById(userChoice);
+        do {
+            System.out.println("------ Suppresion de Client ------");
+            displayClient();
+            System.out.println("Veuillez entrer l'id du client a supprimer : ");
+            if(scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (clientDAO.getById(userChoice) != null) {
+                    System.out.println("Etes vous sur de vouloir supprimer : '" + clientDAO.getById(userChoice).getNom() + " " + clientDAO.getById(userChoice).getPrenom() + "', Veuillez repondre par (Oui/Non)");
+                    areYouSure = scanner.nextLine();
+                    while (!"Oui".equalsIgnoreCase(areYouSure) && !"Non".equalsIgnoreCase(areYouSure)) {
+                        System.out.println("Veuillez repondre uniquement par (Oui/Non)");
+                        areYouSure = scanner.nextLine();
+                    }
+                    if("Oui".equalsIgnoreCase(areYouSure)) {
+                        clientDAO.deleteById(userChoice);
+                    }
+                } else {
+                    System.out.println("Erreur ID inexistant");
+                }
             } else {
-                System.out.println("Erreur ID inexistant");
+                System.out.println("Erreur veuillez entrer une valeur numerique");
             }
-        } else {
-            System.out.println("Erreur veuillez entrer une valeur numerique");
-        }
+
+            System.out.println("Voulez-vous supprimer un autre client ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void searchClient() {
         ClientDAO clientDAO =  new ClientDAO();
         ArrayList<Client> searchResults = new ArrayList<>();
         String search;
+        String response;
 
-        System.out.println("------ Recherche de Client ------");
-        System.out.println("Veuillez entrer le terme de la recherche ");        
-        search = scanner.nextLine();
-        searchResults = clientDAO.searchClients(search);
-        
-        if (searchResults != null) {
-            System.out.println("Resultat de la recherche : ");
-            for (Client client : searchResults) {
-                System.out.println(client);
+        do {
+            System.out.println("------ Recherche de Client ------");
+            System.out.println("Veuillez entrer le terme de la recherche ");        
+            search = scanner.nextLine();
+            searchResults = clientDAO.searchClients(search);
+            
+            if (searchResults != null) {
+                System.out.println("Resultat de la recherche : ");
+                for (Client client : searchResults) {
+                    System.out.println(client);
+                }
+            } else {
+                System.out.println("Aucun resultat trouve pour : " + search);
             }
-        } else {
-            System.out.println("Aucun resultat trouve pour : " + search);
-        }
+            System.out.println("Voulez-vous rechercher un autre client ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void displayCategorie() {
         ArrayList<Categorie> categories = new ArrayList<>();
         CategorieDAO categorieDAO = new CategorieDAO();
-        int nbCategories = 0;
         ProduitDAO produitDAO = new ProduitDAO();
+        int nbCategories = 0;
         
         categories = categorieDAO.getAll();
-       
-        
-
         System.out.print("------ Affichage des Categories ------\n");
         for (Categorie categorie : categories) {
             categorie = categorieDAO.getById(categorie.getId());
@@ -559,21 +639,30 @@ public class Main {
     public static void addCategorie() {
         CategorieDAO categorieDAO = new CategorieDAO();
         Categorie categorie = new Categorie();
-        String title;
         boolean isInputValid = false;
+        String title;
+        String response;
 
-        System.out.println("------ Ajout de Categorie ------");
-        while(!isInputValid){
-            displayCategorie();
-            System.out.println("Veuillez entrer le nom de la categorie: ");
-            title = scanner.nextLine();
-            if (categorie.setTitre(title)) {
-                isInputValid = true;
-            } else {
-                System.out.println("Le nom de la categorie entré n'est pas valide. Veuillez réessayer.");
+        do {
+            System.out.println("------ Ajout de Categorie ------");
+            while(!isInputValid){
+                displayCategorie();
+                System.out.println("Veuillez entrer le nom de la categorie: ");
+                title = scanner.nextLine();
+                if (categorie.setTitre(title)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le nom de la categorie entré n'est pas valide. Veuillez réessayer.");
+                }
             }
-        }
-        categorieDAO.save(categorie);
+            categorieDAO.save(categorie);
+            System.out.println("Voulez-vous ajouter une autre categorie ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
     
     public static void modifyCategorie() {
@@ -581,63 +670,82 @@ public class Main {
         Categorie categorie = new Categorie();
         boolean isInputValid = false;
         String titre;
+        String response;
         int userChoice;
      
-        System.out.println("------ Modification de Categorie ------");
-        while(true) {
-            displayCategorie();
-            System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
-            if(scanner.hasNextInt()) {
-                userChoice = scanner.nextInt();
-                scanner.nextLine();
-                categorie = clientDAO.getById(userChoice);
-                    if(categorie != null) {
-                        break;
-                    } else {
-                        System.out.println("Entrée invalide.");
-                    }
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
-            }
-        }
+        do {
 
-        while(!isInputValid) {
-            System.out.println("Ancien nom : " + categorie.getTitre() + "\nVeuillez entrer le nouveau titre : ");
-            titre = scanner.nextLine();
-
-            if(categorie.setTitre(titre)) {
-                isInputValid = true;
-            } else {
-                System.out.println("Le titre de la categorie entré n'est pas valide. Veuillez réessayer.");
+            System.out.println("------ Modification de Categorie ------");
+            while(true) {
+                displayCategorie();
+                System.out.println("Veuillez entrer l'id de la categorie a modifier : ");
+                if(scanner.hasNextInt()) {
+                    userChoice = scanner.nextInt();
+                    scanner.nextLine();
+                    categorie = clientDAO.getById(userChoice);
+                        if(categorie != null) {
+                            break;
+                        } else {
+                            System.out.println("Entrée invalide.");
+                        }
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                    scanner.next();
+                }
             }
-        }
-        clientDAO.save(categorie);
+    
+            while(!isInputValid) {
+                System.out.println("Ancien nom : " + categorie.getTitre() + "\nVeuillez entrer le nouveau titre : ");
+                titre = scanner.nextLine();
+    
+                if(categorie.setTitre(titre)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le titre de la categorie entré n'est pas valide. Veuillez réessayer.");
+                }
+            }
+            clientDAO.save(categorie);
+            System.out.println("Voulez-vous modifier une autre categorie ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void deleteCategorie() {
         CategorieDAO categorieDAO = new CategorieDAO();
         ProduitDAO produitDAO = new ProduitDAO();
+        String response;
         int userChoice;
 
-        System.out.println("------ Suppresion d'une Categorie ------");
-        displayCategorie();
-        System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
-        if(scanner.hasNextInt()) {
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (categorieDAO.getById(userChoice) != null) {
-                if(produitDAO.getByIdCategorie(userChoice) != null) {
-                    produitDAO.deleteByIdCategorie(userChoice);
+        do {
+            System.out.println("------ Suppresion d'une Categorie ------");
+            displayCategorie();
+            System.out.println("Veuillez entrer l'id de la categorie a supprimer : ");
+            if(scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (categorieDAO.getById(userChoice) != null) {
+                    if(produitDAO.getByIdCategorie(userChoice) != null) {
+                        produitDAO.deleteByIdCategorie(userChoice);
+                    }
+                    categorieDAO.deleteById(userChoice);
+                } else {
+                    System.out.println("Erreur ID invalide");
                 }
-                categorieDAO.deleteById(userChoice);
             } else {
-                System.out.println("Erreur ID invalide");
+                System.out.println("Erreur veuillez entrer une valeur numerique");
+                scanner.next();
             }
-        } else {
-            System.out.println("Erreur veuillez entrer une valeur numerique");
-            scanner.next();
-        }
+            System.out.println("Voulez-vous supprimer une autre categorie ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void displayOrder() {
@@ -664,11 +772,13 @@ public class Main {
                 prixTotal = 0;
                 for (Detail detail : details) {
                     produit = produitDAO.getById(detail.getId_produit());
-                    prixDetail = produit.getPrix() * detail.getQuantite();
+                    prixDetail = detail.getPrixU() * detail.getQuantite();
                     prixTotal += prixDetail;
-                    System.out.println("Produit: " + produit.getTitre() + ", Quantité: " + detail.getQuantite() + ", Prix Unitaire: " + produit.getPrix() + ", Prix Total: " + prixDetail);
+                    System.out.println("Produit: " + produit.getTitre() + ", Quantité: " + detail.getQuantite() + 
+                                        "\nPrix Unitaire avant promotion :" + produit.getPrix() + " / Prix total avant promotion : " + (produit.getPrix() * detail.getQuantite()) +
+                                        "\nPrix Unitaire: " + detail.getPrixU() + "/ Prix Total: " + prixDetail + " / Reste a payer = " + (prixDetail - alreadyPaid(commande.getId())));
                 }
-    
+                
                 System.out.println("Prix Total de la Commande: " + prixTotal + "\n");
             }
         }
@@ -767,8 +877,7 @@ public class Main {
                 response = scanner.next().equalsIgnoreCase("oui");
             }
         }
-
-    System.out.println("Commande créée avec succès.");
+        System.out.println("Commande créée avec succès.");
     }
 
     public static void deleteOrder() {
@@ -777,37 +886,47 @@ public class Main {
         DetailDAO detailDAO = new DetailDAO();
         Produit produit = new Produit();
         Detail detail = new Detail();
+        String response;
         int returnToStock;
         int userChoice;
         int id_produit;
 
-        System.out.println("------ Suppresion d'une Commande ------");   
-        displayOrder();
-        System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
-        if(scanner.hasNextInt()) {
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (commandeDAO.getById(userChoice) != null) {
-                detail = detailDAO.getByIdCommande(userChoice);
-                if (detail != null) {
-                    ProduitDAO produitDAO = new ProduitDAO();
-                    detailDAO.deleteByIdCommande(userChoice);
-                    id_produit = detail.getId_produit();
-                    produit = produitDAO.getById(id_produit);
-                    returnToStock = detail.getQuantite();
-                    produit.setStock(produit.getStock() + returnToStock);
+        do {
+
+            System.out.println("------ Suppresion d'une Commande ------");   
+            displayOrder();
+            System.out.println("Veuillez entrer l'id de la commande a supprimer : ");
+            if(scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (commandeDAO.getById(userChoice) != null) {
+                    detail = detailDAO.getByIdCommande(userChoice);
+                    if (detail != null) {
+                        ProduitDAO produitDAO = new ProduitDAO();
+                        detailDAO.deleteByIdCommande(userChoice);
+                        id_produit = detail.getId_produit();
+                        produit = produitDAO.getById(id_produit);
+                        returnToStock = detail.getQuantite();
+                        produit.setStock(produit.getStock() + returnToStock);
+                    }
+                    if (paiementDAO.getByIdCommande(userChoice) != null) {
+                        paiementDAO.deleteByIdCommande(userChoice);
+                    }
+                    commandeDAO.deleteById(userChoice);
+                } else {
+                    System.out.println("Veuillez entrer un ID existant : ");
                 }
-                if (paiementDAO.getByIdCommande(userChoice) != null) {
-                    paiementDAO.deleteByIdCommande(userChoice);
-                }
-                commandeDAO.deleteById(userChoice);
             } else {
-                System.out.println("Veuillez entrer un ID existant : ");
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                scanner.next();
             }
-        } else {
-            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-            scanner.next();
-        }
+            System.out.println("Voulez-vous supprimer une autre commande ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void displaySupplier() {
@@ -828,30 +947,39 @@ public class Main {
         boolean isInputValid = false;
         String name;
         String city;
+        String response;
 
-        System.out.println("------ Ajout de Fournisseur ------");
-        while (!isInputValid) {
-            displaySupplier();
-            System.out.println("Veuillez entrer le nom du fournisseur : ");
-            name = scanner.nextLine();
-            if(fournisseur.setNom(name)) {
-                isInputValid = true;
-            } else {
-                System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+        do {
+            System.out.println("------ Ajout de Fournisseur ------");
+            while (!isInputValid) {
+                displaySupplier();
+                System.out.println("Veuillez entrer le nom du fournisseur : ");
+                name = scanner.nextLine();
+                if(fournisseur.setNom(name)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("Le nom entré n'est pas valide. Veuillez réessayer.");
+                }
             }
-        }
-        isInputValid = false;
-
-        while (!isInputValid) {
-            System.out.println("Veuillez entrer la ville du fournisseur : ");
-            city = scanner.nextLine();
-            if(fournisseur.setVille(city)) {
-                isInputValid = true;
-            } else {
-                System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+            isInputValid = false;
+    
+            while (!isInputValid) {
+                System.out.println("Veuillez entrer la ville du fournisseur : ");
+                city = scanner.nextLine();
+                if(fournisseur.setVille(city)) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("La ville entré n'est pas valide. Veuillez réessayer.");
+                }
             }
-        }
-        fournisseurDAO.save(fournisseur);
+            fournisseurDAO.save(fournisseur);
+            System.out.println("Voulez-vous ajouter un autre fournisseur ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void modifySupplier() {
@@ -904,43 +1032,61 @@ public class Main {
     public static void deleteSupplier() {
         FournisseurDAO fournisseurDAO = new FournisseurDAO();
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
+        String response;
         int userChoice;
 
-        System.out.println("------ Suppresion d'un Fourniseur ------");
-        displaySupplier();
-        System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
-        if (scanner.hasNextInt()) {
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (fournisseurDAO.getById(userChoice) != null) {
-                if (entree_stockDAO.getByIdSupplier(userChoice) != null) {
-                    entree_stockDAO.deleteByIdSupplier(userChoice);
+        do {
+            System.out.println("------ Suppresion d'un Fourniseur ------");
+            displaySupplier();
+            System.out.println("Veuillez entrer l'id du fournisseur a supprimer : ");
+            if (scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (fournisseurDAO.getById(userChoice) != null) {
+                    if (entree_stockDAO.getByIdSupplier(userChoice) != null) {
+                        entree_stockDAO.deleteByIdSupplier(userChoice);
+                    }
+                    fournisseurDAO.deleteById(userChoice);
+                } else {
+                    System.out.println("Erreur ID invalide");
                 }
-                fournisseurDAO.deleteById(userChoice);
-            } else {
-                System.out.println("Erreur ID invalide");
             }
-        }
+            System.out.println("Voulez-vous supprimer un autre fournisseur ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void searchSupplier() {
         ArrayList<Fournisseur> searchResults = new ArrayList<>();
         FournisseurDAO clientDAO =  new FournisseurDAO();
         String search;
+        String response;
 
-        System.out.println("------ Recherche de Fournisseur ------");
-        System.out.println("Veuillez entrer le terme de la recherche ");
-        search = scanner.nextLine();
-        searchResults = clientDAO.searchSupplier(search);
-
-        if (searchResults != null) {
-            System.out.println("Resultat de la recherche : ");
-            for (Fournisseur fournisseur : searchResults) {
-                System.out.println(fournisseur);
+        do {
+            System.out.println("------ Recherche de Fournisseur ------");
+            System.out.println("Veuillez entrer le terme de la recherche ");
+            search = scanner.nextLine();
+            searchResults = clientDAO.searchSupplier(search);
+    
+            if (searchResults != null) {
+                System.out.println("Resultat de la recherche : ");
+                for (Fournisseur fournisseur : searchResults) {
+                    System.out.println(fournisseur);
+                }
+            } else {
+                System.out.println("Aucun resultat trouve pour : " + search);
+            } 
+            System.out.println("Voulez-vous rechercher un autre fournisseur ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
             }
-        } else {
-            System.out.println("Aucun resultat trouve pour : " + search);
-        }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void displayStock() {
@@ -961,91 +1107,116 @@ public class Main {
         ProduitDAO produitDAO = new ProduitDAO();
         Entree_stock entree_stock = new Entree_stock();
         Produit produit = new Produit();
+        String response;
         int id_fournisseur;
         int id_produit;
         int quantite;
-
-        System.out.println("------ Ajout d'une Entree Stock ------");
-        displayStock();
-        while (true) {
-            displayProduct();
-            System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            if (scanner.hasNextInt()) {
-                id_produit = scanner.nextInt();
-                scanner.nextLine();
-                produit = produitDAO.getById(id_produit);
-                if(produit != null){
-                    
-                    entree_stock.setId_produit(id_produit);
-                    break;
-                } else {
-                    System.out.println("Entrée invalide.");
-                }
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
-            }
-        }
-
-        while (true) {
-            displaySupplier();
-            System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");          
-            if (scanner.hasNextInt()) {
-                id_fournisseur = scanner.nextInt();
-                scanner.nextLine();
-                if(fournisseurDAO.getById(id_fournisseur) != null){
-                    entree_stock.setId_fournisseur(id_fournisseur);
-                    break;
-                } else {
-                    System.out.println("Entrée invalide.");
-                }
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
-            }
-        }
         
-        while (true) {
-            System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
-            if (scanner.hasNextInt()) {
-                quantite = scanner.nextInt();
-                if (quantite > 0) {
-                    entree_stock.setQuantite(quantite);
-                    produit.setStock(produit.getStock() + quantite);
+        do {
+
+            System.out.println("------ Ajout d'une Entree Stock ------");
+            displayStock();
+            while (true) {
+                displayProduct();
+                System.out.println("Veuillez Choisir le produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+                if (scanner.hasNextInt()) {
+                    id_produit = scanner.nextInt();
                     scanner.nextLine();
-                    break;
+                    produit = produitDAO.getById(id_produit);
+                    if(produit != null){
+                        
+                        entree_stock.setId_produit(id_produit);
+                        break;
+                    } else {
+                        System.out.println("Entrée invalide.");
+                    }
                 } else {
-                    System.out.println("Veuillez entrer une valeur positive.");
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                    scanner.next();
                 }
-            } else {
-                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
-                scanner.next();
             }
-        }
-        produitDAO.save(produit);
-        entree_stockDAO.save(entree_stock);
+    
+            while (true) {
+                displaySupplier();
+                System.out.println("Veuillez Choisir le fournisseur du produit a ajouter au stock en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");          
+                if (scanner.hasNextInt()) {
+                    id_fournisseur = scanner.nextInt();
+                    scanner.nextLine();
+                    if(fournisseurDAO.getById(id_fournisseur) != null){
+                        entree_stock.setId_fournisseur(id_fournisseur);
+                        break;
+                    } else {
+                        System.out.println("Entrée invalide.");
+                    }
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                    scanner.next();
+                }
+            }
+            
+            while (true) {
+                System.out.println("Veuillez entrer la quantite de produit a ajouter au stock : ");
+                if (scanner.hasNextInt()) {
+                    quantite = scanner.nextInt();
+                    if (quantite > 0) {
+                        entree_stock.setQuantite(quantite);
+                        produit.setStock(produit.getStock() + quantite);
+                        scanner.nextLine();
+                        break;
+                    } else {
+                        System.out.println("Veuillez entrer une valeur positive.");
+                    }
+                } else {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+                    scanner.next();
+                }
+            }
+            produitDAO.save(produit);
+            entree_stockDAO.save(entree_stock);
+            System.out.println("Voulez-vous ajouter une autre entree en stock ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static void deleteStock() {
         Entree_stockDAO entree_stockDAO = new Entree_stockDAO();
         int userChoice;
+        String response;
 
-        System.out.println("------ Suppresion d'un Fourniseur ------");
-        displayStock();
-
-        System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
-        if (scanner.hasNextInt()) {
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (entree_stockDAO.getById(userChoice) != null) {
-                entree_stockDAO.deleteById(userChoice);
-            }
-        } else {
-            System.out.println("Erreur ID invalide");
-            scanner.next();
-        }
-    }
+        do {
+            System.out.println("------ Suppresion d'un Fourniseur ------");
+            displayStock();
     
+            System.out.println("Veuillez entrer l'id du Stock a supprimer uniquement en valeur numerique : ");
+            if (scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (entree_stockDAO.getById(userChoice) != null) {
+                    entree_stockDAO.deleteById(userChoice);
+                }
+            } else {
+                System.out.println("Erreur ID invalide");
+                scanner.next();
+            }
+            System.out.println("Voulez-vous supprimer une autre entree en stock ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
+    }
+
+    /**
+    * Affiche les détails de tous les paiements enregistrés. Pour chaque paiement, 
+    * récupère et affiche les informations associées de la commande et du client correspondant. 
+    * Utilise PaiementDAO pour obtenir tous les paiements, et CommandeDAO et ClientDAO pour 
+    * obtenir les détails supplémentaires nécessaires.
+    **/
     public static void displayPaiement() {
         ArrayList<Paiement> paiements = new ArrayList<>();
         PaiementDAO paiementDAO = new PaiementDAO();
@@ -1064,145 +1235,241 @@ public class Main {
         }
     }
 
+    /**
+    * Gère l'ajout de paiements pour des commandes spécifiques. La méthode guide l'utilisateur à travers 
+    * plusieurs étapes : sélection d'une commande par ID, vérification du montant restant à payer, saisie du montant 
+    * du paiement et de la date de paiement, et enregistrement du paiement dans la base de données. La saisie de l'utilisateur 
+    * est validée à chaque étape. La méthode permet l'ajout de paiements multiples par une boucle do-while.
+    **/
     public static void addPaiement() {
         PaiementDAO paiementDAO = new PaiementDAO();
         CommandeDAO commandeDAO = new CommandeDAO();
+        DetailDAO detailDAO = new DetailDAO();
+        Detail detail = new Detail();
         Paiement paiement = new Paiement();
-        Double paid;
+        String response;
+        double paid;
+        double alreadyPaid;
         int id_commande;
-
-        System.out.println("------ Paiement ------");
-        displayOrder();
-
-        while (true) {
-            System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            if (scanner.hasNextInt()){
-                id_commande = scanner.nextInt();
-                scanner.nextLine();
-                if(commandeDAO.getById(id_commande) != null) {
-                    paiement.setId_commande(id_commande);
-                    break;
-                } else {
-                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
-            }
-        }
+        double total;
+        boolean isLeftToPay;
         
-        while(true) {
-            System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
-            if (scanner.hasNextDouble()) {
-                paid = scanner.nextDouble();
-                scanner.nextLine();
-                paiement.setMontant(paid);
-                break;
-            } else {
-                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
-                scanner.next();
+        do {
+            isLeftToPay = true;
+            System.out.println("------ Paiement ------");
+            displayOrder();
+    
+            while (true) {
+                System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+                if (scanner.hasNextInt()){
+                    id_commande = scanner.nextInt();
+                    scanner.nextLine();
+                    if(commandeDAO.getById(id_commande) != null) {
+                        paiement.setId_commande(id_commande);
+                        break;
+                    } else {
+                        System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    }
+                } else {
+                    System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                    scanner.next();
+                }
             }
-        }
+    
+            detail = detailDAO.getByIdCommande(id_commande);
+            alreadyPaid = alreadyPaid(id_commande);
+            total = detail.getPrixU() * detail.getQuantite();
+    
+            if (alreadyPaid == total){
+                System.out.println("La commande est deja regle.");
+                isLeftToPay = false;
+            }
+    
+            if (isLeftToPay) {
+                while(true) {
+                    System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
+                    if (scanner.hasNextDouble()) {
+                        paid = scanner.nextDouble();
+                        scanner.nextLine();
+                        while (paid <= 0) {
+                            System.out.println("Veuillez entrer une valeur positive svp : ");
+                            paid = scanner.nextDouble();
+                            scanner.nextLine();
+                        }
+                        if (alreadyPaid + paid > total){
+                            System.out.print("Vous avez entre une somme trop eleve qui depasse le prix total de la commande.");
+                        } else {
+                            paiement.setMontant(paid);
+                            break;
+                        }
+                    } else {
+                        System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+                        scanner.next();
+                    }
+                }
+        
+                while (true) {
+                    System.out.println("Veuillez entrer la date du paiement au format YYYY-MM-DD : ");
+                    String date = scanner.nextLine();
+                    if (isDateFormatValid(date)) {
+                            LocalDate localDate = LocalDate.parse(date);
+                            java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+                            paiement.setDateP(sqlDate);
+                            break;
+                    } else {
+                            System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
+                    }
+                }
+                paiementDAO.save(paiement);
+            }
+            System.out.println("Voulez-vous ajouter un autre paiement ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
+    }
 
-        while (true) {
-            System.out.println("Veuillez entrer la date du paiement au format YYYY-MM-DD : ");
-            if (scanner.hasNextLine()) {
-                String date = scanner.nextLine();
-                if (isDateFormatValid(date)) {
-                    LocalDate localDate = LocalDate.parse(date);
-                    java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
-                    paiement.setDateP(sqlDate);
-                    break;
+    /**
+    * Permet à l'utilisateur de modifier les détails d'un paiement existant. 
+    * Les étapes comprennent la sélection du paiement par ID, la modification de l'ID de la commande associée, 
+    * la saisie d'un nouveau montant de paiement et la mise à jour de la date du paiement. 
+    * Les entrées sont validées à chaque étape. La méthode permet également de modifier plusieurs paiements 
+    * dans une session grâce à une boucle do-while.
+    **/
+    public static void modifyPaiement() {
+        PaiementDAO paiementDAO = new PaiementDAO();
+        CommandeDAO commandeDAO = new CommandeDAO();
+        DetailDAO detailDAO = new DetailDAO();
+        Detail detail = new Detail();
+        Paiement paiement = new Paiement();
+        int id_commande;
+        int userChoice;
+        double alreadyPaid;
+        double paid;
+        String response;
+
+        do {
+            System.out.println("------ Modification de Paiement ------");
+            while (true) {
+                displayPaiement();
+                System.out.println("Veuillez entrer l'id du paiement a modifier en utilisant uniquement des caracteres numerique : ");
+                if (scanner.hasNextInt()) {
+                    userChoice = scanner.nextInt();
+                    scanner.nextLine();
+                    paiement = paiementDAO.getById(userChoice);
+                    if (paiement != null) {
+                        break;
+                    } else {
+                        System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    }
+                } else {
+                    System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                    scanner.next();
+                }
+            }
+    
+            while (true) {
+                System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
+                if (scanner.hasNextInt()){
+                    id_commande = scanner.nextInt();
+                    scanner.nextLine();
+                    if(commandeDAO.getById(id_commande) != null) {
+                        paiement.setId_commande(id_commande);
+                        break;
+                    } else {
+                        System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
+                    }
+                } else {
+                    System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
+                    scanner.next();
+                }
+            }
+            
+            while(true) {
+                System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
+                alreadyPaid = alreadyPaid(id_commande);
+                if (scanner.hasNextDouble()) {
+                    paid = scanner.nextDouble();
+                    scanner.nextLine();
+                    while (paid <= 0) {
+                        System.out.println("Veuillez entrer une valeur positive : ");
+                        paid = scanner.nextDouble();
+                        scanner.nextLine();
+                    }
+                    detail = detailDAO.getByIdCommande(id_commande);
+                    if (alreadyPaid + paid > (detail.getPrixU() * detail.getQuantite())){
+                        System.out.print("Vous avez entre une somme trop eleve qui depasse le prix total de la commande.");
+                    } else {
+                        paiement.setMontant(paid);
+                        break;
+                    }
+                } else {
+                    System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
+                    scanner.next();
+                }
+            }
+    
+            while (true) {
+                System.out.println("Veuillez entrer la date du paiement au format YYYY-MM-DD : ");
+                if (scanner.hasNextLine()) {
+                    String date = scanner.nextLine();
+                    if (isDateFormatValid(date)) {
+                        LocalDate localDate = LocalDate.parse(date);
+                        java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+                        paiement.setDateP(sqlDate);
+                        break;
+                    } else {
+                        System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
+                        scanner.next();
+                    }
                 } else {
                     System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
                     scanner.next();
                 }
-            } else {
-                System.out.println("L'entrée n'est pas une date valide. Veuillez entrer une date au format YYYY-MM-DD.");
-                scanner.next();
             }
-        }
-        paiementDAO.save(paiement);
+            paiementDAO.save(paiement);
+            System.out.println("Voulez-vous modifier une autre categorie ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
-    public static void modifyPaiement() {
-        PaiementDAO paiementDAO = new PaiementDAO();
-        CommandeDAO commandeDAO = new CommandeDAO();
-        Paiement paiement = new Paiement();
-        Double price;
-        int id_commande;
-        int userChoice;
-
-        System.out.println("------ Modification de Paiement ------");
-        
-        while (true) {
-            displayPaiement();
-            System.out.println("Veuillez entrer l'id du paiement a modifier en utilisant uniquement des caracteres numerique : ");
-            if (scanner.hasNextInt()) {
-                userChoice = scanner.nextInt();
-                scanner.nextLine();
-                paiement = paiementDAO.getById(userChoice);
-                if (paiement != null) {
-                    break;
-                } else {
-                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
-            }
-        }
-
-
-        while (true) {
-            System.out.println("Veuillez choisir a quel commande appartient le paiement en selectionnant l'id correspond en utilisant uniquement des caracteres numerique : ");
-            if (scanner.hasNextInt()){
-                id_commande = scanner.nextInt();
-                scanner.nextLine();
-                if(commandeDAO.getById(id_commande) != null) {
-                    paiement.setId_commande(id_commande);
-                    break;
-                } else {
-                    System.out.println("L'ID entré n'est pas valide. Veuillez réessayer.");
-                }
-            } else {
-                System.out.println("L'entrée n'est pas un nombre valide. Veuillez entrer un nombre entier.");
-                scanner.next();
-            }
-        }
-        
-        while(true) {
-            System.out.println("Veuillez entrer le paiement uniquement en valeur numerique : ");
-            if (scanner.hasNextDouble()) {
-                price = scanner.nextDouble();
-                scanner.nextLine();
-                paiement.setMontant(price);
-                break;
-            } else {
-                System.out.print("La somme entré n'est pas valide. Veuillez réessayer.");
-                scanner.next();
-            }
-        }
-        paiementDAO.save(paiement);
-    }
-
+    /**
+    * Permet la suppression de paiements enregistrés. L'utilisateur est invité à choisir un paiement à supprimer 
+    * par son ID après l'affichage de tous les paiements existants. La validation de l'ID est effectuée avant la suppression. 
+    * Offre la possibilité de supprimer plusieurs paiements dans une même session grâce à une boucle do-while.
+    **/
     public static void deletePaiement() {
         PaiementDAO paiementDAO = new PaiementDAO();
         int userChoice;
+        String response;
 
-        System.out.println("------ Suppresion d'un Paiement ------");
-        displayProduct();
-        System.out.println("Veuillez entrer l'id du paiement a supprimer : ");
-        if(scanner.hasNextInt()){
-            userChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (paiementDAO.getById(userChoice) != null) {
-                paiementDAO.deleteById(userChoice);
+        do {
+            System.out.println("------ Suppresion d'un Paiement ------");
+            displayPaiement();
+            System.out.println("Veuillez entrer l'id du paiement a supprimer : ");
+            if(scanner.hasNextInt()){
+                userChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (paiementDAO.getById(userChoice) != null) {
+                    paiementDAO.deleteById(userChoice);
+                }
+            } else {
+                System.out.println("Erreur ID invalide");
+                scanner.next();
             }
-        } else {
-            System.out.println("Erreur ID invalide");
-            scanner.next();
-        }
+            System.out.println("Voulez-vous supprimer un autre paiement ? (Oui/Non)");
+            response = scanner.nextLine();
+            while (!"Oui".equalsIgnoreCase(response) && !"Non".equalsIgnoreCase(response)) {
+                System.out.println("Veuillez repondre uniquement par (Oui/Non).");
+                response = scanner.nextLine();
+            }
+        } while ("Oui".equalsIgnoreCase(response));
     }
 
     public static int menu() {
